@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import Nav from '../Components/Elements/Nav';
-import Footer from '../Components/Elements/Footer';
+import Nav from '../Elements/Nav';
+import Footer from '../Elements/Footer';
 
 function Dashboard() {
   const [posts, setPosts] = useState([]);
