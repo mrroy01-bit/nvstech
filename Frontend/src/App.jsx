@@ -8,7 +8,7 @@ import Service from './Pages/Service';
 import Contact from './Pages/Contact';
 import Blog from './Pages/Blog';
 import Login from './Pages/Login';
-import Dashboard from './Pages/Dashboard';
+import Dashboard from './Pages/Admin/Dashboard';
 import Register from './Pages/Register';
 
 function App() {
@@ -16,7 +16,7 @@ function App() {
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/about" element={<About />} />
-      <Route path="/portfolio" element={<Portfolio />} />
+      <Route path="/project" element={<Portfolio />} />
       <Route path="/service" element={<Service />} />
       <Route path="/blog" element={<Blog />} />
       <Route path="/contact" element={<Contact />} />

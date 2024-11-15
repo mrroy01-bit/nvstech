@@ -4,7 +4,6 @@ import Nav from '../Components/Elements/Nav';
 import Footer from '../Components/Elements/Footer';
 import gsap from 'gsap';
 import { useEffect } from 'react';
-import { loginAuth } from '../Components/Auth/LoginAuth';
 
 function Login() {
   const navigate = useNavigate();
