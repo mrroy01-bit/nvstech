@@ -3,6 +3,8 @@ import Nav from '../Components/Elements/Nav'
 import hero from '../Assets/Img/hero-img.png'
 import gsap from 'gsap'
 import Footer from '../Components/Elements/Footer';
+import Hero from '../Components/Elements/Hero';
+import Desing from '../Components/Animation/Desing';
 
 function Home() {
   useEffect(() => {
@@ -132,6 +134,8 @@ function Home() {
           <img src={hero} alt="hero" />
         </div>
       </div>
+      <Hero />
+      <Desing />
       <Footer />
     </>
   )
