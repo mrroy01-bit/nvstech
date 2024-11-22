@@ -2,14 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
+
+
+
 .logo{
-  color: rgb(10, 100, 122);
+  color: rgb(244, 249, 250);
   cursor: pointer;
 }
+.logo img{
+  border: 1px solid white;
+  border-radius:5px;
+}
+
 .slide {
   display: flex;
   border-radius: 10px;
-  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 5px 5px 10px rgba(239, 237, 237, 0.2);
   margin-top: 20px;
   overflow-x: scroll;
   overflow-y: hidden;
@@ -36,7 +44,8 @@
   display: flex;
   padding: 20px;
   border-radius: 10px;
-  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 5px 5px 10px rgba(248, 246, 246, 0.2);
+  margin-left: 10px;
 }
 
 .card img {
@@ -44,4 +53,7 @@
   height: 100%;
   object-fit: cover;
 }
-
+.lr-1{
+  color:black;
+}
+/* Animation styles for the slide */

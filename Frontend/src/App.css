@@ -1,0 +1,9 @@
+body {
+    background: linear-gradient(135deg, #000428, #004e92);
+    font-family: 'Arial', sans-serif;
+    color: #fff;
+}
+
+#about,#blog,#contact,#portfolio,#login,#service{
+    background: linear-gradient(135deg, #000428, #004e92);
+}

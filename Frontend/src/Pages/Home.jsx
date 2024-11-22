@@ -4,7 +4,9 @@ import hero from '../Assets/Img/hero-img.png'
 import gsap from 'gsap'
 import Footer from '../Components/Elements/Footer';
 import Hero from '../Components/Elements/Hero';
-import Desing from '../Components/Animation/Desing';
+import Animation from '../Components/Animation/Desing';
+
+import Animatio1 from '../Components/Animation/animation1';
 
 function Home() {
   useEffect(() => {
@@ -135,7 +137,8 @@ function Home() {
         </div>
       </div>
       <Hero />
-      <Desing />
+      <Animation/>
+      <Animatio1/>
       <Footer />
     </>
   )

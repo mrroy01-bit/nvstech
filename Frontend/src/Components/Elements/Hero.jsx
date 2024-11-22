@@ -16,9 +16,9 @@ import { SiAdobephotoshop } from "react-icons/si";
 function Hero() {
     return (
         <>
-            <div className="text-center mt-[70px]">
-                <h1 className="text-xl font-extrabold text-gray-900 sm:text-3xl">Technology & Frameworks We Use For Design & Development</h1>
-                <div className="flex  mt-12 gap-5  ml-[70px] ">
+            <div className="text-center mt-[70px] text-white">
+                <h1 className="text-xl font-extrabold  sm:text-3xl">Technology & Frameworks We Use For Design & Development</h1>
+                <div className="flex lr-1  mt-12 gap-5  ml-[70px] ">
                     <div className="bg-white rounded-lg shadow-md p-4 w-64 ">
                         <h2 className="text-lg font-bold">Language</h2>
                         <ul className="pl-4 mt-2 space-y-2">
