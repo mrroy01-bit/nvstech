@@ -16,7 +16,7 @@ function Nav() {
           </div>
         </div>
         <nav className="ml-[400px] flex justify-between">
-            <ul className="flex  space-x-4 font-semibold border-[1px] border-[#1344d6] pl-4 pr-4 py-3 rounded-full bg-[#1B1B59] ">
+            <ul className="flex  space-x-4 font-normal border-[1px] border-[#1344d6] pl-4 pr-4 py-3 rounded-full bg-[#1B1B59] ">
                 <Link to="/" className='hover:text-gray-400 mt-2'>Home</Link>
                 <Link to="/about" className='hover:text-gray-400 mt-2'>About</Link>
                 <Link to="/service" className='hover:text-gray-400 mt-2'>Service</Link>
