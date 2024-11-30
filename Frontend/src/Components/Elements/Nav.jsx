@@ -1,66 +1,9 @@
-import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import logoImg from '../img/logo.png'
 import { FaLock } from "react-icons/fa";
 
 
 function Nav() {
-  useEffect(() => {
-    const TxtType = function(el, toRotate, period) {
-      this.toRotate = toRotate;
-      this.el = el;
-      this.loopNum = 0;
-      this.period = parseInt(period, 10) || 2000;
-      this.txt = '';
-      this.tick();
-      this.isDeleting = false;
-    };
-
-    TxtType.prototype.tick = function() {
-      const i = this.loopNum % this.toRotate.length;
-      const fullTxt = this.toRotate[i];
-
-      if (this.isDeleting) {
-        this.txt = fullTxt.substring(0, this.txt.length - 1);
-      } else {
-        this.txt = fullTxt.substring(0, this.txt.length + 1);
-      }
-
-      this.el.innerHTML = '<span class="wrap">'+this.txt+'</span>';
-
-      const that = this;
-      let delta = 200 - Math.random() * 100;
-
-      if (this.isDeleting) { delta /= 2; }
-
-      if (!this.isDeleting && this.txt === fullTxt) {
-        delta = this.period;
-        this.isDeleting = true;
-      } else if (this.isDeleting && this.txt === '') {
-        this.isDeleting = false;
-        this.loopNum++;
-        delta = 500;
-      }
-
-      setTimeout(function() {
-        that.tick();
-      }, delta);
-    };
-
-    const element = document.querySelector('.typewrite');
-    if (element) {
-      new TxtType(element, ["NVS Tech"], 2000);
-    }
-
-    const css = document.createElement("style");
-    css.type = "text/css";
-    css.innerHTML = ".typewrite > .wrap { border-right: 0.08em solid #000}";
-    document.body.appendChild(css);
-
-    return () => {
-      document.body.removeChild(css);
-    };
-  }, []);
 
   return (
     <>
@@ -69,11 +12,10 @@ function Nav() {
          <div className='flex'>
           <Link to= '/' className='flex'>
           <img src={logoImg} alt="logo" className='h-8 w-auto' />
-          <h1 className='text-2xl ml-1 font-bold'>NVS Tech</h1>
           </Link>         
           </div>
         </div>
-        <nav className="ml-[300px] flex justify-between">
+        <nav className="ml-[400px] flex justify-between">
             <ul className="flex  space-x-4 font-semibold border-[1px] border-[#1344d6] pl-4 pr-4 py-3 rounded-full bg-[#1B1B59] ">
                 <Link to="/" className='hover:text-gray-400 mt-2'>Home</Link>
                 <Link to="/about" className='hover:text-gray-400 mt-2'>About</Link>
