@@ -16,6 +16,7 @@ A modern web application built with React and Tailwind CSS, featuring a team sho
 - React Icons
 
 ## Getting Started
+1. Clone the repository: `git clone https://github.com/mrroy01-bit/nvstech.git
 
 ### Prerequisites
 - Node.js (v14 or higher)
@@ -24,16 +25,18 @@ A modern web application built with React and Tailwind CSS, featuring a team sho
 ### Installation
 1. Clone the repository
 ```bash
-git clone [your-repo-url]
+git clone https://github.com/mrroy01-bit/nvstech.git
 ```
 
 2. Install dependencies
 ```bash
 npm install
+
 ```
 
 3. Start the development server
 ```bash
+cd Frontend
 npm start
 ```
 
