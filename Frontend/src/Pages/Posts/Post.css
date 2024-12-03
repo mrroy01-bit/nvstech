@@ -34,10 +34,11 @@
 }
 
 .post-title {
-  font-size: 3rem;
+  font-size: 2rem;
   font-weight: bold;
   margin-bottom: 1rem;
   line-height: 1.2;
+  color: aliceblue;
 }
 
 .post-info {
@@ -58,6 +59,7 @@
 
 .content-wrapper {
   white-space: pre-wrap;
+  color: #eee;
 }
 
 .related-posts {
