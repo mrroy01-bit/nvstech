@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FaImage, FaTimes } from 'react-icons/fa';
+import { FaImage, FaTimes, FaBold, FaItalic, FaLink, FaHeading, FaPalette } from 'react-icons/fa';
 import axios from 'axios';
 import './NewPost.css';
 
@@ -13,6 +13,7 @@ const NewPost = ({ onClose, onSave }) => {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [selectedColor, setSelectedColor] = useState('#000000');
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -23,6 +24,49 @@ const NewPost = ({ onClose, onSave }) => {
         imagePreview: URL.createObjectURL(file)
       });
     }
+  };
+
+  const insertFormatting = (type) => {
+    const textarea = document.querySelector('textarea');
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const selectedText = post.content.substring(start, end);
+    let formattedText = '';
+
+    switch(type) {
+      case 'bold':
+        formattedText = `**${selectedText}**`;
+        break;
+      case 'italic':
+        formattedText = `*${selectedText}*`;
+        break;
+      case 'link':
+        const url = prompt('Enter URL:');
+        if (url) {
+          formattedText = `[${selectedText}](${url})`;
+        }
+        break;
+      case 'h1':
+        formattedText = `# ${selectedText}`;
+        break;
+      case 'h2':
+        formattedText = `## ${selectedText}`;
+        break;
+      case 'h3':
+        formattedText = `### ${selectedText}`;
+        break;
+      case 'h4':
+        formattedText = `#### ${selectedText}`;
+        break;
+      case 'color':
+        formattedText = `<span style="color: ${selectedColor}">${selectedText}</span>`;
+        break;
+      default:
+        formattedText = selectedText;
+    }
+
+    const newContent = post.content.substring(0, start) + formattedText + post.content.substring(end);
+    setPost({ ...post, content: newContent });
   };
 
   const handleSubmit = async (e) => {
@@ -88,6 +132,39 @@ const NewPost = ({ onClose, onSave }) => {
               <option value="travel">Travel</option>
               <option value="food">Food</option>
             </select>
+          </div>
+          <div className="editor-toolbar">
+            <button type="button" onClick={() => insertFormatting('bold')} title="Bold">
+              <FaBold />
+            </button>
+            <button type="button" onClick={() => insertFormatting('italic')} title="Italic">
+              <FaItalic />
+            </button>
+            <button type="button" onClick={() => insertFormatting('link')} title="Insert Link">
+              <FaLink />
+            </button>
+            <div className="heading-dropdown">
+              <button type="button" className="heading-button" title="Headings">
+                <FaHeading />
+              </button>
+              <div className="heading-options">
+                <button type="button" onClick={() => insertFormatting('h1')}>H1</button>
+                <button type="button" onClick={() => insertFormatting('h2')}>H2</button>
+                <button type="button" onClick={() => insertFormatting('h3')}>H3</button>
+                <button type="button" onClick={() => insertFormatting('h4')}>H4</button>
+              </div>
+            </div>
+            <div className="color-picker">
+              <button type="button" title="Text Color">
+                <FaPalette />
+              </button>
+              <input
+                type="color"
+                value={selectedColor}
+                onChange={(e) => setSelectedColor(e.target.value)}
+                onBlur={() => insertFormatting('color')}
+              />
+            </div>
           </div>
           <div className="form-group text-black">
             <textarea

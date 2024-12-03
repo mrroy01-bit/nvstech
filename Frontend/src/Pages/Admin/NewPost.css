@@ -4,7 +4,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.7);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -13,53 +13,58 @@
 
 .new-post-modal {
   background-color: white;
+  padding: 2rem;
   border-radius: 8px;
   width: 90%;
   max-width: 800px;
   max-height: 90vh;
   overflow-y: auto;
-  padding: 24px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 24px;
+  margin-bottom: 1.5rem;
 }
 
 .modal-header h2 {
   margin: 0;
-  color: #202124;
+  color: #333;
 }
 
 .close-button {
   background: none;
   border: none;
-  font-size: 20px;
-  color: #5f6368;
+  font-size: 1.5rem;
   cursor: pointer;
-  padding: 4px;
+  color: #666;
+}
+
+.close-button:hover {
+  color: #333;
 }
 
 .form-group {
-  margin-bottom: 20px;
+  margin-bottom: 1.5rem;
 }
 
-.form-group input[type="text"],
+.form-group input,
 .form-group select,
 .form-group textarea {
   width: 100%;
-  padding: 12px;
-  border: 1px solid #e0e0e0;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
   border-radius: 4px;
-  font-size: 14px;
+  font-size: 1rem;
 }
 
-.form-group textarea {
-  resize: vertical;
-  min-height: 200px;
+.error-message {
+  color: #dc2626;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  border-radius: 4px;
+  background-color: #fee2e2;
 }
 
 .image-upload {
@@ -68,69 +73,137 @@
 }
 
 .upload-placeholder {
-  border: 2px dashed #e0e0e0;
+  border: 2px dashed #ddd;
   border-radius: 4px;
-  padding: 40px;
+  padding: 2rem;
   text-align: center;
-  color: #5f6368;
-}
-
-.upload-placeholder:hover {
-  border-color: #1a73e8;
-  color: #1a73e8;
+  color: #666;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .image-preview {
   max-width: 100%;
-  max-height: 300px;
+  max-height: 200px;
   object-fit: contain;
 }
 
 .button-group {
   display: flex;
   justify-content: flex-end;
-  gap: 12px;
-  margin-top: 24px;
+  gap: 1rem;
+  margin-top: 2rem;
 }
 
 .cancel-button,
 .save-button {
-  padding: 8px 24px;
+  padding: 0.5rem 1rem;
   border-radius: 4px;
-  font-size: 14px;
+  font-weight: 500;
   cursor: pointer;
 }
 
 .cancel-button {
-  background-color: transparent;
-  border: 1px solid #5f6368;
-  color: #5f6368;
+  background-color: #f3f4f6;
+  border: 1px solid #d1d5db;
+  color: #374151;
 }
 
 .save-button {
-  background-color: #1a73e8;
+  background-color: #0A647A;
   border: none;
   color: white;
 }
 
+.save-button:hover {
+  background-color: #085466;
+}
+
 .save-button:disabled {
-  background-color: #ccc;
+  background-color: #9ca3af;
   cursor: not-allowed;
 }
 
-.save-button:not(:disabled):hover {
-  background-color: #1557b0;
+/* New styles for rich text editor */
+.editor-toolbar {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  background-color: #f3f4f6;
+  border: 1px solid #ddd;
+  border-bottom: none;
+  border-radius: 4px 4px 0 0;
+  margin-bottom: -1px;
 }
 
-.cancel-button:hover {
-  background-color: #f1f3f4;
-}
-
-.error-message {
-  background-color: #fde7e9;
-  color: #b71c1c;
-  padding: 12px;
+.editor-toolbar button {
+  padding: 0.5rem;
+  background: none;
+  border: 1px solid transparent;
   border-radius: 4px;
-  margin-bottom: 16px;
-  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #4b5563;
+}
+
+.editor-toolbar button:hover {
+  background-color: #e5e7eb;
+  border-color: #d1d5db;
+}
+
+.heading-dropdown {
+  position: relative;
+}
+
+.heading-options {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 0.25rem;
+  display: none;
+  flex-direction: column;
+  gap: 0.25rem;
+  z-index: 10;
+  min-width: 100px;
+}
+
+.heading-dropdown:hover .heading-options {
+  display: flex;
+}
+
+.heading-options button {
+  padding: 0.25rem 0.5rem;
+  text-align: left;
+  width: 100%;
+}
+
+.color-picker {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.color-picker input[type="color"] {
+  width: 0;
+  height: 0;
+  padding: 0;
+  border: none;
+  position: absolute;
+  visibility: hidden;
+}
+
+.color-picker button:hover + input[type="color"] {
+  visibility: visible;
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  top: 100%;
+  left: 0;
 }
