@@ -1,0 +1,154 @@
+.post-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  color: #333;
+}
+
+.post-header {
+  margin-bottom: 2rem;
+}
+
+.post-featured-image {
+  width: 100%;
+  height: 500px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+}
+
+.post-meta {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.post-category {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background-color: #0A647A;
+  color: white;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  text-transform: capitalize;
+  margin-bottom: 1rem;
+}
+
+.post-title {
+  font-size: 3rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+.post-info {
+  color: #666;
+  font-size: 1rem;
+}
+
+.separator {
+  margin: 0 0.5rem;
+}
+
+.post-content {
+  margin: 0 auto;
+  max-width: 800px;
+  line-height: 1.8;
+  font-size: 1.1rem;
+}
+
+.content-wrapper {
+  white-space: pre-wrap;
+}
+
+.related-posts {
+  margin-top: 4rem;
+  padding-top: 2rem;
+  border-top: 1px solid #eee;
+}
+
+.related-posts h2 {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.related-posts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.related-post-card {
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.related-post-card:hover {
+  transform: translateY(-4px);
+}
+
+.related-post-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.related-post-info {
+  padding: 1rem;
+}
+
+.related-post-info h3 {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.related-post-info p {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.post-navigation {
+  margin-top: 3rem;
+  text-align: center;
+}
+
+.back-button {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.75rem 1.5rem;
+  background-color: #0A647A;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.back-button:hover {
+  background-color: #085466;
+}
+
+@media (max-width: 768px) {
+  .post-container {
+    padding: 1rem;
+  }
+
+  .post-featured-image {
+    height: 300px;
+  }
+
+  .post-title {
+    font-size: 2rem;
+  }
+
+  .post-content {
+    font-size: 1rem;
+  }
+}

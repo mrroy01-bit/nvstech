@@ -1,128 +1,138 @@
-import { useState, useEffect } from 'react';
-import Nav from '../../Components/Elements/Nav';
-import Footer from '../../Components/Elements/Footer';
+import React, { useState, useEffect } from 'react';
+import { 
+  FaRegNewspaper, 
+  FaChartBar, 
+  FaRegComments,
+  FaDollarSign,
+  FaRegFile,
+  FaPalette,
+  FaBrush,
+  FaCog,
+  FaPlus,
+  FaSearch
+} from 'react-icons/fa';
+import './Dashboard.css';
+import NewPost from './NewPost';
 
-function Dashboard() {
+const Dashboard = () => {
+  const [activePage, setActivePage] = useState('posts');
+  const [showNewPost, setShowNewPost] = useState(false);
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
-    // TODO: Fetch posts from backend
-    // This is example data
-    setPosts([
-      {
-        id: 1,
-        title: "Getting Started with React",
-        content: "React is a powerful JavaScript library...",
-        author: "John Doe",
-        date: "2023-07-20",
-        likes: 15,
-        views: 234,
-        comments: [
-          {
-            id: 1,
-            author: "Jane Smith",
-            content: "Great article!",
-            date: "2023-07-21"
-          }
-        ]
-      }
-    ]);
+    // Load existing posts from localStorage
+    const savedPosts = JSON.parse(localStorage.getItem('blog-posts')) || [];
+    setPosts(savedPosts);
   }, []);
 
-  const handleLike = (postId) => {
-    setPosts(posts.map(post => {
-      if (post.id === postId) {
-        return { ...post, likes: post.likes + 1 };
-      }
-      return post;
-    }));
+  const handleNewPost = (postData) => {
+    const newPost = {
+      id: Date.now(),
+      ...postData,
+      date: new Date().toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      }),
+      author: 'Admin' // You can replace this with actual user data
+    };
+    
+    const updatedPosts = [newPost, ...posts];
+    setPosts(updatedPosts);
+    
+    // Save to localStorage
+    localStorage.setItem('blog-posts', JSON.stringify(updatedPosts));
   };
 
-  const [newComment, setNewComment] = useState("");
-
-  const handleAddComment = (postId) => {
-    if (!newComment.trim()) return;
-
-    setPosts(posts.map(post => {
-      if (post.id === postId) {
-        return {
-          ...post,
-          comments: [...post.comments, {
-            id: post.comments.length + 1,
-            author: "Current User", // Should come from auth context
-            content: newComment,
-            date: new Date().toISOString().split('T')[0]
-          }]
-        };
-      }
-      return post;
-    }));
-    setNewComment("");
-  };
+  const menuItems = [
+    { id: 'posts', icon: <FaRegNewspaper />, label: 'Posts' },
+    { id: 'stats', icon: <FaChartBar />, label: 'Stats' },
+    { id: 'comments', icon: <FaRegComments />, label: 'Comments' },
+    { id: 'earnings', icon: <FaDollarSign />, label: 'Earnings' },
+    { id: 'pages', icon: <FaRegFile />, label: 'Pages' },
+    { id: 'layout', icon: <FaPalette />, label: 'Layout' },
+    { id: 'theme', icon: <FaBrush />, label: 'Theme' },
+    { id: 'settings', icon: <FaCog />, label: 'Settings' },
+  ];
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <Nav />
+    <div className="dashboard-container text-black">
       
-      <main className="flex-grow container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-8">Blog Posts</h1>
-        
-        <div className="space-y-8">
-          {posts.map(post => (
-            <div key={post.id} className="bg-white p-6 rounded-lg shadow-md">
-              <h2 className="text-2xl font-bold mb-2">{post.title}</h2>
-              <p className="text-gray-600 mb-4">{post.content}</p>
-              
-              <div className="flex items-center space-x-4 mb-4">
-                <button 
-                  onClick={() => handleLike(post.id)}
-                  className="flex items-center space-x-1 text-indigo-600 hover:text-indigo-800"
-                >
-                  <span>👍</span>
-                  <span>{post.likes}</span>
-                </button>
-                <div className="text-gray-500">
-                  <span>👁️ {post.views} views</span>
-                </div>
-              </div>
-
-              <div className="border-t pt-4">
-                <h3 className="font-bold mb-2">Comments ({post.comments.length})</h3>
-                <div className="space-y-4">
-                  {post.comments.map(comment => (
-                    <div key={comment.id} className="bg-gray-50 p-3 rounded">
-                      <p className="text-sm">{comment.content}</p>
-                      <p className="text-xs text-gray-500 mt-1">
-                        By {comment.author} on {comment.date}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="mt-4 flex space-x-2">
-                  <input
-                    type="text"
-                    value={newComment}
-                    onChange={(e) => setNewComment(e.target.value)}
-                    placeholder="Add a comment..."
-                    className="flex-grow p-2 border rounded"
-                  />
-                  <button
-                    onClick={() => handleAddComment(post.id)}
-                    className="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700"
-                  >
-                    Comment
-                  </button>
-                </div>
-              </div>
-            </div>
+      
+      {/* Sidebar */}
+      <div className="sidebar">
+        <button className="new-post-button" onClick={() => setShowNewPost(true)}>
+          <FaPlus style={{ marginRight: '8px' }} />
+          NEW POST
+        </button>
+        <ul className="sidebar-menu">
+          {menuItems.map((item) => (
+            <li
+              key={item.id}
+              className={`menu-item ${activePage === item.id ? 'active' : ''}`}
+              onClick={() => setActivePage(item.id)}
+            >
+              <span className="menu-item-icon">{item.icon}</span>
+              {item.label}
+            </li>
           ))}
-        </div>
-      </main>
+        </ul>
+      </div>
 
-      <Footer />
+      {/* Main Content */}
+      <div className="main-content">
+        {/* Header */}
+        <div className="header">
+          <div className="search-bar">
+            <FaSearch style={{ 
+              position: 'absolute', 
+              left: '12px', 
+              top: '50%', 
+              transform: 'translateY(-50%)',
+              color: '#5f6368'
+            }} />
+            <input
+              type="text"
+              className="search-input"
+              placeholder="Search posts"
+            />
+          </div>
+        </div>
+
+        {/* Empty State or Posts List */}
+        {posts.length === 0 ? (
+          <div className="empty-state">
+            <img src="/pencil-icon.png" alt="No posts" />
+            <h3>No posts</h3>
+            <p>Posts you create will show up here</p>
+          </div>
+        ) : (
+          <div className="posts-list">
+            {posts.map(post => (
+              <div key={post.id} className="post-card">
+                {post.imagePreview && (
+                  <img src={post.imagePreview} alt={post.title} className="post-image" />
+                )}
+                <div className="post-content">
+                  <h3>{post.title}</h3>
+                  <p className="post-category">{post.category}</p>
+                  <p className="post-excerpt">{post.content.substring(0, 150)}...</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* New Post Modal */}
+      {showNewPost && (
+        <NewPost
+          onClose={() => setShowNewPost(false)}
+          onSave={handleNewPost}
+        />
+      )}
     </div>
   );
-}
+};
 
 export default Dashboard;
