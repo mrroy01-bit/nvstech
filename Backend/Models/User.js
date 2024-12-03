@@ -12,11 +12,13 @@ const userSchema = new mongoose.Schema({
         required: true,
         unique: true,
         trim: true,
-        lowercase: true
+        lowercase: true,
+        match: [/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/, 'Please enter a valid email address']
     },
     password: {
         type: String,
-        required: true
+        required: true,
+        minlength: 6
     },
     createdAt: {
         type: Date,

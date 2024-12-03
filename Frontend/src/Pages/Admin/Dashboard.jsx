@@ -9,11 +9,35 @@ import {
   FaPlus,
   FaSearch,
   FaEdit,
-  FaTrash
+  FaTrash,
+  FaEye,
+  FaHeart,
+  FaComment
 } from 'react-icons/fa';
 import axios from 'axios';
 import './Dashboard.css';
 import NewPost from './NewPost';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+  ArcElement
+} from 'chart.js';
+import { Bar, Pie } from 'react-chartjs-2';
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+  ArcElement
+);
 
 const Dashboard = () => {
   const [activePage, setActivePage] = useState('posts');
@@ -22,10 +46,13 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [editingPost, setEditingPost] = useState(null);
+  const [stats, setStats] = useState(null);
 
   useEffect(() => {
     if (activePage === 'posts') {
       fetchPosts();
+    } else if (activePage === 'stats') {
+      fetchStats();
     }
   }, [activePage]);
 
@@ -50,6 +77,41 @@ const Dashboard = () => {
         message: err.message,
         response: err.response,
         config: err.config
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchStats = async () => {
+    try {
+      setLoading(true);
+      setError(''); // Clear previous errors
+      const response = await axios.get('http://localhost:8080/api/posts/stats');
+      
+      // Log the full response for debugging
+      console.log('Stats API Response:', response);
+      
+      if (response.data && response.data.success) {
+        setStats(response.data.data);
+      } else {
+        // Handle unexpected response format
+        const errorMsg = response.data?.message || 'Unexpected response format';
+        setError(`Failed to load statistics: ${errorMsg}`);
+        console.error('Stats Error:', errorMsg);
+      }
+    } catch (error) {
+      // Detailed error logging
+      const errorMessage = error.response 
+        ? `Server Error: ${error.response.status} - ${error.response.data.message || 'Unknown error'}` 
+        : error.message || 'Network error. Check your server connection.';
+      
+      setError(errorMessage);
+      console.error('Detailed Stats Fetch Error:', {
+        message: errorMessage,
+        fullError: error,
+        response: error.response,
+        config: error.config
       });
     } finally {
       setLoading(false);
@@ -101,6 +163,137 @@ const Dashboard = () => {
     { id: 'settings', icon: <FaCog />, label: 'Settings' },
   ];
 
+  const renderStats = () => {
+    if (!stats) return null;
+
+    const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    
+    const monthlyData = {
+      labels: stats.postsByMonth.map(item => `${monthNames[item._id.month - 1]} ${item._id.year}`),
+      datasets: [{
+        label: 'Posts Published',
+        data: stats.postsByMonth.map(item => item.count),
+        backgroundColor: '#0A647A',
+      }]
+    };
+
+    const categoryData = {
+      labels: stats.postsByCategory.map(item => item._id),
+      datasets: [{
+        data: stats.postsByCategory.map(item => item.count),
+        backgroundColor: [
+          '#0A647A',
+          '#1A8594',
+          '#2AA6B3',
+          '#3AC7D2',
+          '#4AE8F1',
+        ],
+      }]
+    };
+
+    return (
+      <div className="stats-container p-6">
+        {/* Overview Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <h3 className="text-gray-500 text-sm font-medium mb-2">Total Posts</h3>
+            <div className="flex items-center">
+              <FaRegNewspaper className="text-[#0A647A] text-2xl mr-2" />
+              <span className="text-2xl font-bold">{stats.totalPosts}</span>
+            </div>
+          </div>
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <h3 className="text-gray-500 text-sm font-medium mb-2">Total Views</h3>
+            <div className="flex items-center">
+              <FaEye className="text-[#0A647A] text-2xl mr-2" />
+              <span className="text-2xl font-bold">{stats.totalViews}</span>
+            </div>
+          </div>
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <h3 className="text-gray-500 text-sm font-medium mb-2">Total Likes</h3>
+            <div className="flex items-center">
+              <FaHeart className="text-[#0A647A] text-2xl mr-2" />
+              <span className="text-2xl font-bold">{stats.totalLikes}</span>
+            </div>
+          </div>
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <h3 className="text-gray-500 text-sm font-medium mb-2">Total Comments</h3>
+            <div className="flex items-center">
+              <FaComment className="text-[#0A647A] text-2xl mr-2" />
+              <span className="text-2xl font-bold">{stats.totalComments}</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Charts */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <h3 className="text-gray-700 font-semibold mb-4">Posts by Month</h3>
+            <Bar
+              data={monthlyData}
+              options={{
+                responsive: true,
+                plugins: {
+                  legend: {
+                    display: false,
+                  },
+                },
+                scales: {
+                  y: {
+                    beginAtZero: true,
+                    ticks: {
+                      stepSize: 1
+                    }
+                  }
+                }
+              }}
+            />
+          </div>
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <h3 className="text-gray-700 font-semibold mb-4">Posts by Category</h3>
+            <Pie
+              data={categoryData}
+              options={{
+                responsive: true,
+                plugins: {
+                  legend: {
+                    position: 'bottom',
+                  }
+                }
+              }}
+            />
+          </div>
+        </div>
+
+        {/* Top Posts Lists */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <h3 className="text-gray-700 font-semibold mb-4">Most Viewed Posts</h3>
+            <ul className="space-y-3">
+              {stats.mostViewedPosts.map((post, index) => (
+                <li key={post._id} className="flex items-center justify-between">
+                  <span className="text-gray-600">{post.title}</span>
+                  <span className="text-[#0A647A] font-medium">{post.views} views</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <h3 className="text-gray-700 font-semibold mb-4">Most Liked Posts</h3>
+            <ul className="space-y-3">
+              {stats.mostLikedPosts.map((post, index) => (
+                <li key={post._id} className="flex items-center justify-between">
+                  <span className="text-gray-600">{post.title}</span>
+                  <span className="text-[#0A647A] font-medium">{post.likeCount} likes</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="dashboard-container text-black">
       {/* Sidebar */}
@@ -143,14 +336,18 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Posts List */}
+        {/* Content */}
         {loading ? (
-          <div className="loading-state">Loading posts...</div>
+          <div className="loading-state">Loading...</div>
         ) : error ? (
           <div className="error-state">
             <p>{error}</p>
-            <button onClick={fetchPosts}>Retry</button>
+            <button onClick={activePage === 'posts' ? fetchPosts : fetchStats}>
+              Retry
+            </button>
           </div>
+        ) : activePage === 'stats' ? (
+          renderStats()
         ) : posts.length === 0 ? (
           <div className="empty-state">
             <img src="/pencil-icon.png" alt="No posts" />

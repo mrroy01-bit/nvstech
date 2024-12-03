@@ -2,12 +2,19 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import Nav from '../Components/Elements/Nav'
+import { FaHeart, FaRegHeart, FaComment, FaEye } from 'react-icons/fa'
 
 const Blog = () => {
   const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [showCommentModal, setShowCommentModal] = useState(false);
+  const [selectedPost, setSelectedPost] = useState(null);
+  const [newComment, setNewComment] = useState('');
+  
+  // TODO: Get actual user ID from authentication
+  const currentUserId = '123'; // Temporary user ID for testing
 
   useEffect(() => {
     fetchPosts();
@@ -28,8 +35,73 @@ const Blog = () => {
     }
   };
 
-  const handleReadMore = (postId) => {
-    navigate(`/blog/${postId}`);
+  const handleReadMore = async (postId) => {
+    try {
+      // Increment view count
+      await axios.post(`http://localhost:8080/api/posts/${postId}/view`);
+      navigate(`/blog/${postId}`);
+    } catch (error) {
+      console.error('Error incrementing view count:', error);
+    }
+  };
+
+  const handleLike = async (postId) => {
+    try {
+      const response = await axios.post(`http://localhost:8080/api/posts/${postId}/like`, {
+        userId: currentUserId
+      });
+      if (response.data.success) {
+        // Update posts state with new like status
+        setPosts(posts.map(post => {
+          if (post._id === postId) {
+            return {
+              ...post,
+              likes: post.likes.includes(currentUserId)
+                ? post.likes.filter(id => id !== currentUserId)
+                : [...post.likes, currentUserId]
+            };
+          }
+          return post;
+        }));
+      }
+    } catch (error) {
+      console.error('Error toggling like:', error);
+    }
+  };
+
+  const handleComment = (post) => {
+    setSelectedPost(post);
+    setShowCommentModal(true);
+  };
+
+  const submitComment = async () => {
+    if (!newComment.trim()) return;
+
+    try {
+      const response = await axios.post(`http://localhost:8080/api/posts/${selectedPost._id}/comment`, {
+        userId: currentUserId,
+        content: newComment
+      });
+
+      if (response.data.success) {
+        // Update posts state with new comment
+        setPosts(posts.map(post => {
+          if (post._id === selectedPost._id) {
+            return {
+              ...post,
+              comments: [...post.comments, response.data.data]
+            };
+          }
+          return post;
+        }));
+
+        // Reset comment form
+        setNewComment('');
+        setShowCommentModal(false);
+      }
+    } catch (error) {
+      console.error('Error adding comment:', error);
+    }
   };
 
   if (loading) {
@@ -133,12 +205,38 @@ const Blog = () => {
                         ? `${post.content.substring(0, 150)}...` 
                         : post.content}
                     </p>
-                    <button 
-                      onClick={() => handleReadMore(post._id)}
-                      className="text-[#0A647A] hover:text-[#085466] font-medium inline-flex items-center"
-                    >
-                      Read more <span className="ml-1">→</span>
-                    </button>
+                    <div className="flex items-center justify-between mt-4">
+                      <div className="flex items-center space-x-4">
+                        <button 
+                          onClick={() => handleLike(post._id)}
+                          className="flex items-center space-x-1 text-gray-500 hover:text-red-500"
+                        >
+                          {post.likes.includes(currentUserId) ? (
+                            <FaHeart className="text-red-500" />
+                          ) : (
+                            <FaRegHeart />
+                          )}
+                          <span>{post.likes.length}</span>
+                        </button>
+                        <button 
+                          onClick={() => handleComment(post)}
+                          className="flex items-center space-x-1 text-gray-500 hover:text-[#0A647A]"
+                        >
+                          <FaComment />
+                          <span>{post.comments.length}</span>
+                        </button>
+                        <div className="flex items-center space-x-1 text-gray-500">
+                          <FaEye />
+                          <span>{post.views}</span>
+                        </div>
+                      </div>
+                      <button 
+                        onClick={() => handleReadMore(post._id)}
+                        className="text-[#0A647A] hover:text-[#085466] font-medium inline-flex items-center"
+                      >
+                        Read more <span className="ml-1">→</span>
+                      </button>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -146,6 +244,35 @@ const Blog = () => {
           )}
         </div>
       </div>
+
+      {/* Comment Modal */}
+      {showCommentModal && selectedPost && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-lg p-6 w-full max-w-lg">
+            <h3 className="text-lg font-semibold mb-4">Add a Comment</h3>
+            <textarea
+              value={newComment}
+              onChange={(e) => setNewComment(e.target.value)}
+              className="w-full p-2 border rounded-lg mb-4 h-32"
+              placeholder="Write your comment..."
+            />
+            <div className="flex justify-end space-x-2">
+              <button
+                onClick={() => setShowCommentModal(false)}
+                className="px-4 py-2 text-gray-600 hover:text-gray-800"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={submitComment}
+                className="px-4 py-2 bg-[#0A647A] text-white rounded hover:bg-[#085466]"
+              >
+                Submit
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };
