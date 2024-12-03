@@ -4,6 +4,7 @@ import Nav from '../Components/Elements/Nav';
 import Footer from '../Components/Elements/Footer';
 import gsap from 'gsap';
 import { useEffect } from 'react';
+import axios from 'axios';
 
 function Login() {
   const navigate = useNavigate();
@@ -42,15 +43,18 @@ function Login() {
     setError('');
     
     try {
-      const result = await loginAuth(formData.email, formData.password);
-      if (result.success) {
+      const response = await axios.post('http://localhost:8080/api/auth/login', formData);
+      
+      if (response.data.success) {
+        // Store token in localStorage
+        localStorage.setItem('token', response.data.token);
+        localStorage.setItem('user', JSON.stringify(response.data.user));
+        
         navigate('/dashboard'); // Redirect to dashboard after successful login
-      } else {
-        setError(result.message);
       }
     } catch (error) {
       console.error('Login error:', error);
-      setError('An error occurred during login');
+      setError(error.response?.data?.message || 'An error occurred during login');
     }
   };
 
