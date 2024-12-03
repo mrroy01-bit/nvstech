@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { 
   FaRegNewspaper, 
   FaChartBar, 
-  FaRegComments,
-  FaDollarSign,
   FaRegFile,
   FaPalette,
   FaBrush,
   FaCog,
   FaPlus,
-  FaSearch
+  FaSearch,
+  FaEdit,
+  FaTrash
 } from 'react-icons/fa';
 import axios from 'axios';
 import './Dashboard.css';
@@ -21,6 +21,7 @@ const Dashboard = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [editingPost, setEditingPost] = useState(null);
 
   useEffect(() => {
     fetchPosts();
@@ -49,11 +50,36 @@ const Dashboard = () => {
     }
   };
 
+  const handleEditPost = async (postData) => {
+    try {
+      const response = await axios.put(`http://localhost:8080/api/posts/${postData._id}`, postData);
+      if (response.data.success) {
+        setEditingPost(null);
+        await fetchPosts(); // Refresh the posts list
+      }
+    } catch (error) {
+      console.error('Error editing post:', error);
+      setError('Failed to edit post');
+    }
+  };
+
+  const handleDeletePost = async (postId) => {
+    if (window.confirm('Are you sure you want to delete this post?')) {
+      try {
+        const response = await axios.delete(`http://localhost:8080/api/posts/${postId}`);
+        if (response.data.success) {
+          await fetchPosts(); // Refresh the posts list
+        }
+      } catch (error) {
+        console.error('Error deleting post:', error);
+        setError('Failed to delete post');
+      }
+    }
+  };
+
   const menuItems = [
     { id: 'posts', icon: <FaRegNewspaper />, label: 'Posts' },
     { id: 'stats', icon: <FaChartBar />, label: 'Stats' },
-    { id: 'comments', icon: <FaRegComments />, label: 'Comments' },
-    { id: 'earnings', icon: <FaDollarSign />, label: 'Earnings' },
     { id: 'pages', icon: <FaRegFile />, label: 'Pages' },
     { id: 'layout', icon: <FaPalette />, label: 'Layout' },
     { id: 'theme', icon: <FaBrush />, label: 'Theme' },
@@ -135,6 +161,22 @@ const Dashboard = () => {
                     <span>{new Date(post.date).toLocaleDateString()}</span>
                     <span className="separator">•</span>
                     <span>{post.author}</span>
+                    <div className="post-actions">
+                      <button 
+                        className="edit-button"
+                        onClick={() => setEditingPost(post)}
+                        title="Edit post"
+                      >
+                        <FaEdit />
+                      </button>
+                      <button 
+                        className="delete-button"
+                        onClick={() => handleDeletePost(post._id)}
+                        title="Delete post"
+                      >
+                        <FaTrash />
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -143,11 +185,15 @@ const Dashboard = () => {
         )}
       </div>
 
-      {/* New Post Modal */}
-      {showNewPost && (
+      {/* New/Edit Post Modal */}
+      {(showNewPost || editingPost) && (
         <NewPost
-          onClose={() => setShowNewPost(false)}
-          onSave={handleNewPost}
+          post={editingPost}
+          onClose={() => {
+            setShowNewPost(false);
+            setEditingPost(null);
+          }}
+          onSave={editingPost ? handleEditPost : handleNewPost}
         />
       )}
     </div>

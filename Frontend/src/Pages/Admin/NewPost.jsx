@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaImage, FaTimes, FaBold, FaItalic, FaLink, FaHeading, FaPalette } from 'react-icons/fa';
 import axios from 'axios';
 import './NewPost.css';
 
-const NewPost = ({ onClose, onSave }) => {
-  const [post, setPost] = useState({
+const NewPost = ({ post, onClose, onSave }) => {
+  const [postData, setPostData] = useState({
     title: '',
     content: '',
     category: '',
@@ -15,11 +15,22 @@ const NewPost = ({ onClose, onSave }) => {
   const [error, setError] = useState('');
   const [selectedColor, setSelectedColor] = useState('#000000');
 
+  // Initialize form with existing post data when editing
+  useEffect(() => {
+    if (post) {
+      setPostData({
+        ...post,
+        image: null, // Reset image since we can't populate File object
+        imagePreview: post.imageUrl ? `http://localhost:8080${post.imageUrl}` : null
+      });
+    }
+  }, [post]);
+
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setPost({
-        ...post,
+      setPostData({
+        ...postData,
         image: file,
         imagePreview: URL.createObjectURL(file)
       });
@@ -30,7 +41,7 @@ const NewPost = ({ onClose, onSave }) => {
     const textarea = document.querySelector('textarea');
     const start = textarea.selectionStart;
     const end = textarea.selectionEnd;
-    const selectedText = post.content.substring(start, end);
+    const selectedText = postData.content.substring(start, end);
     let formattedText = '';
 
     switch(type) {
@@ -65,8 +76,8 @@ const NewPost = ({ onClose, onSave }) => {
         formattedText = selectedText;
     }
 
-    const newContent = post.content.substring(0, start) + formattedText + post.content.substring(end);
-    setPost({ ...post, content: newContent });
+    const newContent = postData.content.substring(0, start) + formattedText + postData.content.substring(end);
+    setPostData({ ...postData, content: newContent });
   };
 
   const handleSubmit = async (e) => {
@@ -76,25 +87,31 @@ const NewPost = ({ onClose, onSave }) => {
 
     try {
       const formData = new FormData();
-      formData.append('title', post.title);
-      formData.append('content', post.content);
-      formData.append('category', post.category);
-      if (post.image) {
-        formData.append('image', post.image);
+      formData.append('title', postData.title);
+      formData.append('content', postData.content);
+      formData.append('category', postData.category);
+      if (postData.image) {
+        formData.append('image', postData.image);
       }
 
-      const response = await axios.post('http://localhost:8080/api/posts/create', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        }
-      });
+      let response;
+      if (post) {
+        // If editing, send PUT request
+        response = await axios.put(`http://localhost:8080/api/posts/${post._id}`, formData, {
+          headers: { 'Content-Type': 'multipart/form-data' }
+        });
+      } else {
+        // If creating new post, send POST request
+        response = await axios.post('http://localhost:8080/api/posts/create', formData, {
+          headers: { 'Content-Type': 'multipart/form-data' }
+        });
+      }
 
       if (response.data.success) {
         onSave(response.data.data);
-        onClose();
       }
     } catch (err) {
-      setError(err.response?.data?.message || 'Error creating post');
+      setError(err.response?.data?.message || 'Error saving post');
     } finally {
       setLoading(false);
     }
@@ -104,7 +121,7 @@ const NewPost = ({ onClose, onSave }) => {
     <div className="new-post-overlay">
       <div className="new-post-modal">
         <div className="modal-header">
-          <h2>Create New Post</h2>
+          <h2>{post ? 'Edit Post' : 'Create New Post'}</h2>
           <button className="close-button" onClick={onClose}>
             <FaTimes />
           </button>
@@ -115,15 +132,15 @@ const NewPost = ({ onClose, onSave }) => {
             <input className='text-black'
               type="text"
               placeholder="Post Title"
-              value={post.title}
-              onChange={(e) => setPost({ ...post, title: e.target.value })}
+              value={postData.title}
+              onChange={(e) => setPostData({ ...postData, title: e.target.value })}
               required
             />
           </div>
           <div className="form-group text-black">
             <select
-              value={post.category}
-              onChange={(e) => setPost({ ...post, category: e.target.value })}
+              value={postData.category}
+              onChange={(e) => setPostData({ ...postData, category: e.target.value })}
               required
             >
               <option value="">Select Category</option>
@@ -169,8 +186,8 @@ const NewPost = ({ onClose, onSave }) => {
           <div className="form-group text-black">
             <textarea
               placeholder="Write your post content..."
-              value={post.content}
-              onChange={(e) => setPost({ ...post, content: e.target.value })}
+              value={postData.content}
+              onChange={(e) => setPostData({ ...postData, content: e.target.value })}
               required
               rows="10"
             />
@@ -184,8 +201,8 @@ const NewPost = ({ onClose, onSave }) => {
                 hidden
               />
               <div className="upload-placeholder">
-                {post.imagePreview ? (
-                  <img src={post.imagePreview} alt="Preview" className="image-preview" />
+                {postData.imagePreview ? (
+                  <img src={postData.imagePreview} alt="Preview" className="image-preview" />
                 ) : (
                   <>
                     <FaImage />
@@ -204,7 +221,7 @@ const NewPost = ({ onClose, onSave }) => {
               className="save-button"
               disabled={loading}
             >
-              {loading ? 'Publishing...' : 'Publish Post'}
+              {loading ? (post ? 'Updating...' : 'Publishing...') : (post ? 'Update Post' : 'Publish Post')}
             </button>
           </div>
         </form>
