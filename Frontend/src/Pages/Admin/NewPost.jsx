@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { FaImage, FaTimes } from 'react-icons/fa';
+import axios from 'axios';
 import './NewPost.css';
 
 const NewPost = ({ onClose, onSave }) => {
@@ -10,6 +11,8 @@ const NewPost = ({ onClose, onSave }) => {
     image: null,
     imagePreview: null
   });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -22,10 +25,35 @@ const NewPost = ({ onClose, onSave }) => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onSave(post);
-    onClose();
+    setLoading(true);
+    setError('');
+
+    try {
+      const formData = new FormData();
+      formData.append('title', post.title);
+      formData.append('content', post.content);
+      formData.append('category', post.category);
+      if (post.image) {
+        formData.append('image', post.image);
+      }
+
+      const response = await axios.post('http://localhost:8080/api/posts/create', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        }
+      });
+
+      if (response.data.success) {
+        onSave(response.data.data);
+        onClose();
+      }
+    } catch (err) {
+      setError(err.response?.data?.message || 'Error creating post');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -38,6 +66,7 @@ const NewPost = ({ onClose, onSave }) => {
           </button>
         </div>
         <form onSubmit={handleSubmit}>
+          {error && <div className="error-message">{error}</div>}
           <div className="form-group">
             <input className='text-black'
               type="text"
@@ -93,8 +122,12 @@ const NewPost = ({ onClose, onSave }) => {
             <button type="button" className="cancel-button" onClick={onClose}>
               Cancel
             </button>
-            <button type="submit" className="save-button">
-              Publish Post
+            <button 
+              type="submit" 
+              className="save-button"
+              disabled={loading}
+            >
+              {loading ? 'Publishing...' : 'Publish Post'}
             </button>
           </div>
         </form>

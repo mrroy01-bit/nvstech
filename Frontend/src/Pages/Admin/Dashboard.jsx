@@ -11,6 +11,7 @@ import {
   FaPlus,
   FaSearch
 } from 'react-icons/fa';
+import axios from 'axios';
 import './Dashboard.css';
 import NewPost from './NewPost';
 
@@ -18,30 +19,34 @@ const Dashboard = () => {
   const [activePage, setActivePage] = useState('posts');
   const [showNewPost, setShowNewPost] = useState(false);
   const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
-    // Load existing posts from localStorage
-    const savedPosts = JSON.parse(localStorage.getItem('blog-posts')) || [];
-    setPosts(savedPosts);
+    fetchPosts();
   }, []);
 
-  const handleNewPost = (postData) => {
-    const newPost = {
-      id: Date.now(),
-      ...postData,
-      date: new Date().toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-      }),
-      author: 'Admin' // You can replace this with actual user data
-    };
-    
-    const updatedPosts = [newPost, ...posts];
-    setPosts(updatedPosts);
-    
-    // Save to localStorage
-    localStorage.setItem('blog-posts', JSON.stringify(updatedPosts));
+  const fetchPosts = async () => {
+    try {
+      const response = await axios.get('http://localhost:8080/api/posts');
+      if (response.data.success) {
+        setPosts(response.data.data);
+      }
+    } catch (err) {
+      setError('Error fetching posts');
+      console.error('Error fetching posts:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleNewPost = async (postData) => {
+    try {
+      setShowNewPost(false);
+      await fetchPosts(); // Refresh the posts list
+    } catch (error) {
+      console.error('Error handling new post:', error);
+    }
   };
 
   const menuItems = [
@@ -57,8 +62,6 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard-container text-black">
-      
-      
       {/* Sidebar */}
       <div className="sidebar">
         <button className="new-post-button" onClick={() => setShowNewPost(true)}>
@@ -99,8 +102,15 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Empty State or Posts List */}
-        {posts.length === 0 ? (
+        {/* Posts List */}
+        {loading ? (
+          <div className="loading-state">Loading posts...</div>
+        ) : error ? (
+          <div className="error-state">
+            <p>{error}</p>
+            <button onClick={fetchPosts}>Retry</button>
+          </div>
+        ) : posts.length === 0 ? (
           <div className="empty-state">
             <img src="/pencil-icon.png" alt="No posts" />
             <h3>No posts</h3>
@@ -109,14 +119,23 @@ const Dashboard = () => {
         ) : (
           <div className="posts-list">
             {posts.map(post => (
-              <div key={post.id} className="post-card">
-                {post.imagePreview && (
-                  <img src={post.imagePreview} alt={post.title} className="post-image" />
+              <div key={post._id} className="post-card">
+                {post.imageUrl && (
+                  <img 
+                    src={`http://localhost:8080${post.imageUrl}`} 
+                    alt={post.title} 
+                    className="post-image" 
+                  />
                 )}
                 <div className="post-content">
                   <h3>{post.title}</h3>
                   <p className="post-category">{post.category}</p>
                   <p className="post-excerpt">{post.content.substring(0, 150)}...</p>
+                  <div className="post-meta">
+                    <span>{new Date(post.date).toLocaleDateString()}</span>
+                    <span className="separator">•</span>
+                    <span>{post.author}</span>
+                  </div>
                 </div>
               </div>
             ))}

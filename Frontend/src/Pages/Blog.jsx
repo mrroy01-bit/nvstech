@@ -1,105 +1,151 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
 import Nav from '../Components/Elements/Nav'
 
 const Blog = () => {
   const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
-    // In a real app, this would be an API call
-    const savedPosts = JSON.parse(localStorage.getItem('blog-posts')) || [];
-    if (savedPosts.length === 0) {
-      // Default posts if none exist
-      setPosts([
-        {
-          id: 1,
-          title: "Getting Started with Web Development",
-          date: "June 15, 2023",
-          excerpt: "Learn the fundamentals of web development and start your journey as a developer.",
-          author: "John Doe",
-          imageUrl: "https://placehold.co/600x400"
-        },
-        {
-          id: 2, 
-          title: "Best Practices for Modern Web Design",
-          date: "June 10, 2023",
-          excerpt: "Discover the latest trends and best practices in modern web design.",
-          author: "Jane Smith",
-          imageUrl: "https://placehold.co/600x400"
-        },
-        {
-          id: 3,
-          title: "Understanding React Fundamentals",
-          date: "June 5, 2023",
-          excerpt: "A comprehensive guide to understanding the core concepts of React.",
-          author: "Mike Johnson",
-          imageUrl: "https://placehold.co/600x400"
-        }
-      ]);
-    } else {
-      setPosts(savedPosts);
-    }
+    fetchPosts();
   }, []);
+
+  const fetchPosts = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get('http://localhost:8080/api/posts');
+      if (response.data.success) {
+        setPosts(response.data.data);
+      }
+    } catch (err) {
+      setError('Failed to load blog posts. Please try again later.');
+      console.error('Error fetching posts:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleReadMore = (postId) => {
     navigate(`/blog/${postId}`);
   };
 
+  if (loading) {
+    return (
+      <>
+        <Nav />
+        <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {[1, 2, 3].map((n) => (
+                <div key={n} className="animate-pulse">
+                  <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                    <div className="h-48 bg-gray-200"></div>
+                    <div className="p-6">
+                      <div className="h-4 bg-gray-200 rounded w-1/4 mb-4"></div>
+                      <div className="h-6 bg-gray-200 rounded w-3/4 mb-4"></div>
+                      <div className="space-y-3">
+                        <div className="h-4 bg-gray-200 rounded"></div>
+                        <div className="h-4 bg-gray-200 rounded"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  }
+
+  if (error) {
+    return (
+      <>
+        <Nav />
+        <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto text-center">
+            <p className="text-red-500 mb-4">{error}</p>
+            <button 
+              onClick={fetchPosts}
+              className="px-4 py-2 bg-[#0A647A] text-white rounded hover:bg-[#085466]"
+            >
+              Try Again
+            </button>
+          </div>
+        </div>
+      </>
+    );
+  }
+
   return (
     <>
-    < Nav />
-    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8" id='blog'>
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
-            Our Blog
-          </h2>
-          <p className="mt-3 max-w-2xl mx-auto text-xl text-gray-500 sm:mt-4">
-            Latest articles, news, and updates from our team
-          </p>
-        </div>
+      <Nav />
+      <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8" id='blog'>
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
+              Our Blog
+            </h2>
+            <p className="mt-3 max-w-2xl mx-auto text-xl text-gray-500 sm:mt-4">
+              Latest articles, news, and updates from our team
+            </p>
+          </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {posts.map((post) => (
-            <div key={post.id} className="bg-white rounded-lg shadow-md overflow-hidden">
-              <img 
-                src={post.imageUrl || post.image} 
-                alt={post.title}
-                className="w-full h-48 object-cover"
-              />
-              <div className="p-6">
-                <div className="flex items-center text-sm text-gray-500">
-                  <span>{post.date}</span>
-                  <span className="mx-2">•</span>
-                  <span>{post.author || 'Anonymous'}</span>
-                  {post.category && (
-                    <>
-                      <span className="mx-2">•</span>
-                      <span className="text-[#0A647A] capitalize">{post.category}</span>
-                    </>
-                  )}
-                </div>
-                <h3 className="mt-2 text-xl font-semibold text-gray-900">
-                  {post.title}
-                </h3>
-                <p className="mt-3 text-base text-gray-500">
-                  {post.content ? post.content.substring(0, 150) + '...' : post.excerpt}
-                </p>
-                <div className="mt-4">
-                  <button 
-                    onClick={() => handleReadMore(post.id)}
-                    className="text-[#0A647A] hover:text-[#085466] font-medium"
-                  >
-                    Read more →
-                  </button>
-                </div>
-              </div>
+          {posts.length === 0 ? (
+            <div className="text-center text-gray-500">
+              No blog posts available yet.
             </div>
-          ))}
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {posts.map((post) => (
+                <div key={post._id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                  {post.imageUrl && (
+                    <img 
+                      src={`http://localhost:8080${post.imageUrl}`}
+                      alt={post.title}
+                      className="w-full h-48 object-cover"
+                    />
+                  )}
+                  <div className="p-6">
+                    <div className="flex items-center text-sm text-gray-500 flex-wrap mb-2">
+                      <span>{new Date(post.date).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                      })}</span>
+                      <span className="mx-2">•</span>
+                      <span>{post.author}</span>
+                      {post.category && (
+                        <>
+                          <span className="mx-2">•</span>
+                          <span className="text-[#0A647A] capitalize">{post.category}</span>
+                        </>
+                      )}
+                    </div>
+                    <h3 className="text-xl font-semibold text-gray-900 mb-3">
+                      {post.title}
+                    </h3>
+                    <p className="text-gray-500 mb-4">
+                      {post.content.length > 150 
+                        ? `${post.content.substring(0, 150)}...` 
+                        : post.content}
+                    </p>
+                    <button 
+                      onClick={() => handleReadMore(post._id)}
+                      className="text-[#0A647A] hover:text-[#085466] font-medium inline-flex items-center"
+                    >
+                      Read more <span className="ml-1">→</span>
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
-    </div>
     </>
   );
 };

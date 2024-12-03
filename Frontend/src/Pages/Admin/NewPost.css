@@ -113,10 +113,24 @@
   color: white;
 }
 
-.save-button:hover {
+.save-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.save-button:not(:disabled):hover {
   background-color: #1557b0;
 }
 
 .cancel-button:hover {
   background-color: #f1f3f4;
+}
+
+.error-message {
+  background-color: #fde7e9;
+  color: #b71c1c;
+  padding: 12px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+  font-size: 14px;
 }

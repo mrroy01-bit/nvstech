@@ -1,19 +1,34 @@
 .dashboard-container {
   display: flex;
   min-height: 100vh;
+  background-color: #f8f9fa;
 }
 
 .sidebar {
-  width: 240px;
-  background-color: #ffffff;
+  width: 250px;
+  background-color: white;
+  padding: 24px;
   border-right: 1px solid #e0e0e0;
-  padding: 20px;
 }
 
-.main-content {
-  flex: 1;
-  padding: 20px;
-  background-color: #f8f9fa;
+.new-post-button {
+  width: 100%;
+  padding: 12px;
+  background-color: #1a73e8;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.new-post-button:hover {
+  background-color: #1557b0;
 }
 
 .sidebar-menu {
@@ -25,12 +40,12 @@
 .menu-item {
   display: flex;
   align-items: center;
-  padding: 12px 16px;
+  padding: 12px;
   color: #5f6368;
-  text-decoration: none;
-  border-radius: 8px;
-  margin-bottom: 4px;
   cursor: pointer;
+  border-radius: 4px;
+  margin-bottom: 4px;
+  transition: background-color 0.2s;
 }
 
 .menu-item:hover {
@@ -46,46 +61,33 @@
   margin-right: 12px;
 }
 
-.new-post-button {
-  display: flex;
-  align-items: center;
-  padding: 8px 24px;
-  background-color: #1a73e8;
-  color: white;
-  border: none;
-  border-radius: 24px;
-  cursor: pointer;
-  font-size: 14px;
-  margin-bottom: 24px;
-}
-
-.new-post-button:hover {
-  background-color: #1557b0;
+.main-content {
+  flex: 1;
+  padding: 24px;
+  background-color: #f8f9fa;
 }
 
 .header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px 24px;
-  background-color: white;
-  border-bottom: 1px solid #e0e0e0;
+  margin-bottom: 24px;
 }
 
 .search-bar {
-  flex: 1;
-  max-width: 720px;
-  margin: 0 24px;
   position: relative;
+  max-width: 600px;
 }
 
 .search-input {
   width: 100%;
-  padding: 8px 16px;
-  padding-left: 40px;
+  padding: 12px 12px 12px 40px;
   border: 1px solid #e0e0e0;
-  border-radius: 24px;
+  border-radius: 4px;
   font-size: 14px;
+  background-color: white;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #1a73e8;
 }
 
 .empty-state {
@@ -95,33 +97,40 @@
 }
 
 .empty-state img {
-  width: 120px;
-  margin-bottom: 24px;
+  width: 64px;
+  height: 64px;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+.empty-state h3 {
+  margin: 0 0 8px;
+  font-size: 18px;
+  font-weight: 500;
 }
 
 .empty-state p {
-  margin: 8px 0;
+  margin: 0;
   font-size: 14px;
 }
 
 .posts-list {
-  padding: 24px;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 24px;
 }
 
 .post-card {
-  background: white;
+  background-color: white;
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .post-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .post-image {
@@ -135,25 +144,63 @@
 }
 
 .post-content h3 {
-  margin: 0 0 8px 0;
-  color: #202124;
+  margin: 0 0 8px;
   font-size: 18px;
+  font-weight: 500;
+  color: #202124;
 }
 
 .post-category {
+  display: inline-block;
+  padding: 4px 8px;
+  background-color: #e8f0fe;
   color: #1a73e8;
+  border-radius: 4px;
   font-size: 12px;
-  text-transform: uppercase;
-  margin: 0 0 8px 0;
+  margin-bottom: 8px;
+  text-transform: capitalize;
 }
 
 .post-excerpt {
-  color: #5f6368;
+  margin: 0 0 12px;
   font-size: 14px;
+  color: #5f6368;
   line-height: 1.5;
-  margin: 0;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+}
+
+.post-meta {
+  font-size: 12px;
+  color: #5f6368;
+}
+
+.separator {
+  margin: 0 8px;
+}
+
+.loading-state {
+  text-align: center;
+  padding: 48px;
+  color: #5f6368;
+  font-size: 16px;
+}
+
+.error-state {
+  text-align: center;
+  padding: 48px;
+  color: #d32f2f;
+}
+
+.error-state button {
+  margin-top: 16px;
+  padding: 8px 16px;
+  background-color: #d32f2f;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.error-state button:hover {
+  background-color: #b71c1c;
 }

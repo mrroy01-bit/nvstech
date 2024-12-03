@@ -10,7 +10,7 @@ import Blog from './Pages/Blog';
 import Login from './Pages/Login';
 import Dashboard from './Pages/Admin/Dashboard';
 import Register from './Pages/register';
-import Post from './Pages/Posts/Post';
+import PostDetail from './Pages/PostDetail';
 
 function App() {
   return (
@@ -20,7 +20,7 @@ function App() {
       <Route path="/project" element={<Portfolio />} />
       <Route path="/service" element={<Service />} />
       <Route path="/blog" element={<Blog />} />
-      <Route path="/blog/:id" element={<Post />} />
+      <Route path="/blog/:id" element={<PostDetail />} />
       <Route path="/contact" element={<Contact />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
