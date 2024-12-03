@@ -81,7 +81,7 @@ npm start
 Frontend:
 ```bash
 cd Frontend
-npm run dev
+npm start
 ```
 
 ## Project Structure
