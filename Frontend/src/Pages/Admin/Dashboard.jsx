@@ -24,18 +24,33 @@ const Dashboard = () => {
   const [editingPost, setEditingPost] = useState(null);
 
   useEffect(() => {
-    fetchPosts();
-  }, []);
+    if (activePage === 'posts') {
+      fetchPosts();
+    }
+  }, [activePage]);
 
   const fetchPosts = async () => {
     try {
       const response = await axios.get('http://localhost:8080/api/posts');
-      if (response.data.success) {
-        setPosts(response.data.data);
+      console.log('Full API Response:', response);
+      
+      if (response.data && response.data.success) {
+        setPosts(response.data.data || []);
+      } else {
+        setError('Unexpected response format from server');
+        console.error('Unexpected response:', response);
       }
     } catch (err) {
-      setError('Error fetching posts');
-      console.error('Error fetching posts:', err);
+      const errorMessage = err.response 
+        ? `Server Error: ${err.response.status} - ${err.response.data.message || 'Unknown error'}` 
+        : 'Network error. Check your server connection.';
+      
+      setError(errorMessage);
+      console.error('Detailed Error:', {
+        message: err.message,
+        response: err.response,
+        config: err.config
+      });
     } finally {
       setLoading(false);
     }

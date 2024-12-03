@@ -144,4 +144,80 @@ router.get('/:id/image', async (req, res) => {
     }
 });
 
+// Update a post
+router.put('/:id', upload.single('image'), async (req, res) => {
+    try {
+        const { title, content, category } = req.body;
+        const updateData = {
+            title,
+            content,
+            category
+        };
+
+        // If new image was uploaded, update the image data
+        if (req.file) {
+            updateData.image = {
+                data: req.file.buffer,
+                contentType: req.file.mimetype
+            };
+        }
+
+        const post = await Post.findByIdAndUpdate(
+            req.params.id,
+            updateData,
+            { new: true } // Return the updated document
+        );
+
+        if (!post) {
+            return res.status(404).json({
+                success: false,
+                message: 'Post not found'
+            });
+        }
+
+        // Transform response to include image URL instead of raw data
+        const postResponse = post.toObject();
+        if (postResponse.image) {
+            postResponse.imageUrl = `/api/posts/${post._id}/image`;
+            delete postResponse.image;
+        }
+
+        res.status(200).json({
+            success: true,
+            message: 'Post updated successfully',
+            data: postResponse
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: 'Error updating post',
+            error: error.message
+        });
+    }
+});
+
+// Delete a post
+router.delete('/:id', async (req, res) => {
+    try {
+        const post = await Post.findByIdAndDelete(req.params.id);
+        if (!post) {
+            return res.status(404).json({
+                success: false,
+                message: 'Post not found'
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            message: 'Post deleted successfully'
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: 'Error deleting post',
+            error: error.message
+        });
+    }
+});
+
 module.exports = router;
