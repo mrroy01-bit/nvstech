@@ -59,22 +59,22 @@ const Contact = () => {
   return (
     <>
     <Nav/>
-    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8" id='contact'>
-      <div className="max-w-md mx-auto">
+    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 py-16 px-4 sm:px-6 lg:px-8" id='contact'>
+      <div className="max-w-lg mx-auto">
         <div className="text-center">
-          <h2 className="text-3xl font-extrabold text-white">Contact Us</h2>
-          <p className="mt-2 text-sm text-gray-600">
+          <h2 className="text-4xl font-extrabold text-white mb-4">Contact Us</h2>
+          <p className="mt-2 text-lg text-gray-300">
             We'd love to hear from you. Send us a message and we'll respond as soon as possible.
           </p>
         </div>
         {status.message && (
-          <div className={`mt-4 p-4 rounded-md ${
-            status.type === 'success' ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'
+          <div className={`mt-6 p-4 rounded-md ${
+            status.type === 'success' ? 'bg-green-100 text-green-800 border border-green-400' : 'bg-red-100 text-red-800 border border-red-400'
           }`}>
             {status.message}
           </div>
         )}
-        <form onSubmit={handleSubmit} className="mt-8 space-y-6">
+        <form onSubmit={handleSubmit} className="mt-10 space-y-6 bg-white/10 backdrop-blur-sm p-8 rounded-xl shadow-xl">
           <div className="rounded-md shadow-sm space-y-4">
             <div>
               <label htmlFor="name" className="sr-only">Name</label>
@@ -83,7 +83,7 @@ const Contact = () => {
                 name="name"
                 type="text"
                 required
-                className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                className="appearance-none rounded-lg relative block w-full px-4 py-3 border border-gray-600 bg-gray-700 placeholder-gray-400 text-white focus:outline-none focus:ring-2 focus:ring-[#0A647A] focus:border-transparent transition duration-150 ease-in-out"
                 placeholder="Your name"
                 value={formData.name}
                 onChange={handleChange}
@@ -96,7 +96,7 @@ const Contact = () => {
                 name="email"
                 type="email"
                 required
-                className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                className="appearance-none rounded-lg relative block w-full px-4 py-3 border border-gray-600 bg-gray-700 placeholder-gray-400 text-white focus:outline-none focus:ring-2 focus:ring-[#0A647A] focus:border-transparent transition duration-150 ease-in-out"
                 placeholder="Email address"
                 value={formData.email}
                 onChange={handleChange}
@@ -109,7 +109,7 @@ const Contact = () => {
                 name="subject"
                 type="text"
                 required
-                className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                className="appearance-none rounded-lg relative block w-full px-4 py-3 border border-gray-600 bg-gray-700 placeholder-gray-400 text-white focus:outline-none focus:ring-2 focus:ring-[#0A647A] focus:border-transparent transition duration-150 ease-in-out"
                 placeholder="Subject"
                 value={formData.subject}
                 onChange={handleChange}
@@ -122,7 +122,7 @@ const Contact = () => {
                 name="message"
                 required
                 rows="4"
-                className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                className="appearance-none rounded-lg relative block w-full px-4 py-3 border border-gray-600 bg-gray-700 placeholder-gray-400 text-white focus:outline-none focus:ring-2 focus:ring-[#0A647A] focus:border-transparent transition duration-150 ease-in-out"
                 placeholder="Your message"
                 value={formData.message}
                 onChange={handleChange}
@@ -134,10 +134,10 @@ const Contact = () => {
             <button
               type="submit"
               disabled={loading}
-              className={`group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white ${
+              className={`group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white transition duration-150 ease-in-out ${
                 loading 
-                  ? 'bg-gray-400 cursor-not-allowed' 
-                  : 'bg-[#0A647A] hover:bg-[#085466] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'
+                  ? 'bg-gray-600 cursor-not-allowed' 
+                  : 'bg-[#0A647A] hover:bg-[#085466] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#0A647A] transform hover:scale-[1.02]'
               }`}
             >
               {loading ? 'Sending...' : 'Send Message'}
