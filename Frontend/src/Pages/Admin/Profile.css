@@ -1,0 +1,154 @@
+/* Base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Space background animation */
+.profile-container {
+    position: relative;
+    overflow: hidden;
+}
+
+/* Floating animation for profile elements */
+.profile-header {
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+/* Glowing effect for cards */
+.info-card {
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.info-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 20px rgba(66, 153, 225, 0.3);
+}
+
+.info-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 0.75rem;
+    background: linear-gradient(45deg, rgba(66, 153, 225, 0.1), rgba(129, 140, 248, 0.1));
+    z-index: -1;
+    transition: opacity 0.3s ease;
+    opacity: 0;
+}
+
+.info-card:hover::before {
+    opacity: 1;
+}
+
+/* Avatar hover effect */
+.avatar-container {
+    position: relative;
+    transition: transform 0.3s ease;
+}
+
+.avatar-container:hover {
+    transform: scale(1.05);
+}
+
+/* Tab hover animations */
+.tab-button {
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.tab-button::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #60A5FA, #818CF8);
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.tab-button:hover::after {
+    width: 100%;
+}
+
+/* Toggle switch glow effect */
+.toggle-switch:checked {
+    box-shadow: 0 0 15px rgba(96, 165, 250, 0.5);
+}
+
+/* Shimmer effect for gradients */
+.gradient-text {
+    background-size: 200% auto;
+    animation: shimmer 2s linear infinite;
+}
+
+@keyframes shimmer {
+    to {
+        background-position: 200% center;
+    }
+}
+
+/* Star twinkle effect */
+.star {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    animation: twinkle 1s infinite;
+}
+
+@keyframes twinkle {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.3;
+    }
+}
+
+/* Button hover effect */
+.action-button {
+    transition: all 0.3s ease;
+    background: linear-gradient(45deg, #3B82F6, #818CF8);
+    background-size: 200% auto;
+}
+
+.action-button:hover {
+    background-position: right center;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4);
+}
+
+/* Input field focus effect */
+.input-field:focus {
+    box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.2);
+    border-color: #60A5FA;
+}
+
+/* Loading spinner animation */
+.loading-spinner {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}

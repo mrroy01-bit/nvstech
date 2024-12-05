@@ -4,13 +4,16 @@ import {
   FaPlus,
   FaSearch,
   FaEdit,
-  FaTrash
+  FaTrash,
+  FaUser
 } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './Dashboard.css';
 import NewPost from './NewPost';
 
 const Dashboard = () => {
+  const navigate = useNavigate();
   const [activePage, setActivePage] = useState('posts');
   const [showNewPost, setShowNewPost] = useState(false);
   const [posts, setPosts] = useState([]);
@@ -88,8 +91,17 @@ const Dashboard = () => {
   };
 
   const menuItems = [
-    { id: 'posts', icon: <FaRegNewspaper />, label: 'Posts' }
+    { id: 'posts', icon: <FaRegNewspaper />, label: 'Posts', link: '/admin/dashboard' },
+    { id: 'profile', icon: <FaUser />, label: 'Profile', link: '/admin/profile' }
   ];
+
+  const handleNavigation = (item) => {
+    if (item.link) {
+      navigate(item.link);
+    } else {
+      setActivePage(item.id);
+    }
+  };
 
   return (
     <div className="dashboard-container text-black">
@@ -100,14 +112,14 @@ const Dashboard = () => {
         </button>
         <ul className="sidebar-menu">
           {menuItems.map((item) => (
-            <li
-              key={item.id}
-              className={`menu-item ${activePage === item.id ? 'active' : ''}`}
-              onClick={() => setActivePage(item.id)}
-            >
-              <span className="menu-item-icon">{item.icon}</span>
-              {item.label}
-            </li>
+           <li
+             key={item.id}
+             className={`menu-item ${activePage === item.id ? 'active' : ''}`}
+             onClick={() => handleNavigation(item)}
+           >
+             <span className="menu-item-icon">{item.icon}</span>
+             {item.label}
+           </li>
           ))}
         </ul>
       </div>

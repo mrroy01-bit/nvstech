@@ -11,6 +11,7 @@ import Login from './Pages/Login';
 import Dashboard from './Pages/Admin/Dashboard';
 import Register from './Pages/register';
 import PostDetail from './Pages/PostDetail';
+import Profile from './Pages/Admin/Profile';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/dashboard" element={<Dashboard />} />
+<      Route path="/admin/profile" element={<Profile />} />
     </Routes>
   );
 }
