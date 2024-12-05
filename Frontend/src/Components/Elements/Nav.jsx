@@ -1,37 +1,98 @@
 import { Link } from 'react-router-dom';
-import logoImg from '../img/logo.png'
+import { useState } from 'react';
+import logoImg from '../img/logo.png';
 import { FaLock } from "react-icons/fa";
-
+import { HiMenu, HiX } from "react-icons/hi";
 
 function Nav() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
 
   return (
-    <>
-      <header className='flex  items-center py-4 px-6 text-white  h-[75px] mt-4'>
-        <div className="logo font-semibold">
-         <div className='flex'>
-          <Link to= '/' className='flex'>
-          <img src={logoImg} alt="logo" className='h-8 w-auto' />
-          </Link>         
+    <header className='fixed top-0 left-0 right-0 z-50 bg-[linear-gradient(135deg,#1a1c2c,#4389A2)] backdrop-blur-sm bg-opacity-80'>
+      <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
+        <div className='flex items-center justify-between h-20'>
+          {/* Logo */}
+          <div className="logo w-1/4">
+            <Link to='/' className='flex items-center space-x-2'>
+              <img src={logoImg} alt="NVS Tech Logo" className='h-10 w-auto' />
+              <span className="hidden sm:block text-xl font-semibold">NVS Tech</span>
+            </Link>
+          </div>
+
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex items-center justify-center w-2/4">
+            <div className="flex space-x-1 bg-gray-800/50 rounded-full px-6 py-2 backdrop-blur-sm">
+              <NavLink to="/" label="Home" />
+              <NavLink to="/about" label="About" />
+              <NavLink to="/service" label="Service" />
+              <NavLink to="/project" label="Portfolio" />
+              <NavLink to="/blog" label="Blog" />
+              <NavLink to="/contact" label="Contact" />
+            </div>
+          </nav>
+
+          {/* Login Button */}
+          <div className="hidden md:flex w-1/4 justify-end">
+            <Link 
+              to='/login'
+              className="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-r from-[#1a1c2c] to-[#4389A2] hover:from-[#4389A2] hover:to-[#1a1c2c] transition-all duration-300 group"
+            >
+              <FaLock className="text-white group-hover:scale-110 transition-transform duration-300" />
+            </Link>
+          </div>
+
+          {/* Mobile Menu Button */}
+          <div className="md:hidden">
+            <button
+              onClick={toggleMenu}
+              className="inline-flex items-center justify-center p-2 rounded-md text-white hover:text-[#4389A2] transition-colors duration-300"
+            >
+              {isMenuOpen ? <HiX size={24} /> : <HiMenu size={24} />}
+            </button>
           </div>
         </div>
-        <nav className="ml-[400px] flex justify-between">
-            <ul className="flex  space-x-4 font-normal border-[1px] border-[#1344d6] pl-4 pr-4 py-3 rounded-full bg-[#1B1B59] ">
-                <Link to="/" className='hover:text-gray-400 mt-2'>Home</Link>
-                <Link to="/about" className='hover:text-gray-400 mt-2'>About</Link>
-                <Link to="/service" className='hover:text-gray-400 mt-2'>Service</Link>
-                <Link to="/project" className='hover:text-gray-400 mt-2'>PortFolio</Link>
-                <Link to="/blog" className='hover:text-gray-400 mt-2'>Blog</Link>
-                <Link to="/contact" className='hover:text-gray-400 mt-2'>Contact</Link>
-               
-            </ul>
-            <Link to='/login' className="flex ml-[300px] items-center justify-center w-10 h-10 rounded-full bg-slate-200 hover:bg-slate-300 transition-colors duration-200">
-                <FaLock className="text-slate-600" />
-                </Link>
-        </nav>
-      </header>
-    </>
-  )
+
+        {/* Mobile Navigation */}
+        {isMenuOpen && (
+          <div className="md:hidden">
+            <div className="px-2 pt-2 pb-3 space-y-1">
+              <MobileNavLink to="/" label="Home" />
+              <MobileNavLink to="/about" label="About" />
+              <MobileNavLink to="/service" label="Service" />
+              <MobileNavLink to="/project" label="Portfolio" />
+              <MobileNavLink to="/blog" label="Blog" />
+              <MobileNavLink to="/contact" label="Contact" />
+              <MobileNavLink to="/login" label="Login" />
+            </div>
+          </div>
+        )}
+      </div>
+    </header>
+  );
 }
 
-export default Nav
+// Desktop NavLink component
+const NavLink = ({ to, label }) => (
+  <Link
+    to={to}
+    className="px-3 py-2 text-gray-300 hover:text-white hover:bg-gray-700/30 rounded-full transition-all duration-300"
+  >
+    {label}
+  </Link>
+);
+
+// Mobile NavLink component
+const MobileNavLink = ({ to, label }) => (
+  <Link
+    to={to}
+    className="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700/30 rounded-md transition-all duration-300"
+  >
+    {label}
+  </Link>
+);
+
+export default Nav;

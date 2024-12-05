@@ -1,11 +1,32 @@
+import { useEffect } from "react";
 import TeamImg from "../img/rb.png";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 
 const Team = () => {
+  useEffect(() => {
+    // Create stars dynamically
+    const starsContainer = document.createElement('div');
+    starsContainer.className = 'stars';
+    for (let i = 0; i < 50; i++) {
+      const star = document.createElement('div');
+      star.className = 'star';
+      star.style.left = `${Math.random() * 100}%`;
+      star.style.top = `${Math.random() * 100}%`;
+      star.style.animationDuration = `${2 + Math.random() * 3}s`;
+      star.style.animationDelay = `${Math.random() * 3}s`;
+      starsContainer.appendChild(star);
+    }
+    document.body.appendChild(starsContainer);
+
+    return () => {
+      document.body.removeChild(starsContainer);
+    };
+  }, []);
+
   return (
-    <div className="min-h-screen bg-[linear-gradient(135deg,#1a1c2c,#4389A2)] py-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen py-20 relative overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <h1 className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#0A647A] to-[#0c8aa8] text-center mb-6">
           Our Team
         </h1>
@@ -103,6 +124,9 @@ const Team = () => {
           </div>
         </div>
       </div>
+
+      {/* Background gradient effect */}
+      <div className="absolute top-0 left-0 right-0 bottom-0 bg-gradient-radial from-[#4389A2]/10 via-transparent to-transparent -z-10"></div>
     </div>
   );
 };

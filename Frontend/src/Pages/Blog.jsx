@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import Nav from '../Components/Elements/Nav'
+import StarBackground from '../Components/Elements/StarBackground'
 import { FaHeart, FaRegHeart, FaComment, FaEye } from 'react-icons/fa'
 
 const Blog = () => {
@@ -155,7 +156,8 @@ const Blog = () => {
   return (
     <>
       <Nav />
-      <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8" id='blog'>
+      <StarBackground />
+      <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden" id='blog'>
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Nav from '../Components/Elements/Nav';
 import Footer from '../Components/Elements/Footer';
+import StarBackground from '../Components/Elements/StarBackground';
 import gsap from 'gsap';
 import { useEffect } from 'react';
 import axios from 'axios';
@@ -64,16 +65,16 @@ function Login() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-[#1a1c2c] to-[#4389A2]">
       <Nav />
-      
-      <div className="flex-grow flex items-center justify-center mt-10 mb-10 px-4 sm:px-6 lg:px-8" id='login'>
-        <div className="max-w-md w-full space-y-8 login-form bg-white p-8 rounded-xl shadow-lg">
+      <StarBackground />
+      <div className="flex-grow mt-[130px] flex items-center justify-center mb-10 px-4 sm:px-6 lg:px-8" id='login'>
+        <div className="max-w-md w-full space-y-8 login-form backdrop-blur-lg bg-opacity-10 bg-white p-8 rounded-xl shadow-lg border border-white/10">
           <div>
-            <h2 className="mt-2 text-center text-3xl font-extrabold text-gray-900 tracking-tight">
+            <h2 className="mt-2 text-center text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white to-[#4389A2] tracking-tight">
               Welcome Back
             </h2>
-            <p className="mt-3 text-center text-sm text-gray-600">
+            <p className="mt-3 text-center text-sm text-gray-300">
               Don't have an account?{' '}
               <Link to="/register" className="font-medium text-indigo-600 hover:text-indigo-500 transition-colors duration-200">
                 Sign up here

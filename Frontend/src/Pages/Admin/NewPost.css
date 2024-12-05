@@ -4,7 +4,8 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -12,13 +13,17 @@
 }
 
 .new-post-modal {
-  background-color: white;
+  background: linear-gradient(135deg, rgba(26, 28, 44, 0.95), rgba(67, 137, 162, 0.95));
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(12px);
   padding: 2rem;
-  border-radius: 8px;
+  border-radius: 16px;
   width: 90%;
   max-width: 800px;
   max-height: 90vh;
   overflow-y: auto;
+  color: #fff;
 }
 
 .modal-header {
@@ -26,11 +31,17 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 1rem;
 }
 
 .modal-header h2 {
   margin: 0;
-  color: #333;
+  background: linear-gradient(135deg, #fff, #4389A2);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-weight: 600;
 }
 
 .close-button {
@@ -38,15 +49,22 @@
   border: none;
   font-size: 1.5rem;
   cursor: pointer;
-  color: #666;
+  color: rgba(255, 255, 255, 0.7);
+  transition: color 0.3s ease;
 }
 
 .close-button:hover {
-  color: #333;
+  color: #fff;
 }
 
 .form-group {
   margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 0.5rem;
+  display: block;
 }
 
 .form-group input,
@@ -54,17 +72,30 @@
 .form-group textarea {
   width: 100%;
   padding: 0.75rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
   font-size: 1rem;
+  color: #fff;
+  transition: all 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #0A647A;
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 0 2px rgba(10, 100, 122, 0.3);
 }
 
 .error-message {
-  color: #dc2626;
+  color: #ff4d4d;
   margin-bottom: 1rem;
-  padding: 0.5rem;
-  border-radius: 4px;
-  background-color: #fee2e2;
+  padding: 0.75rem;
+  border-radius: 8px;
+  background: rgba(255, 77, 77, 0.1);
+  border: 1px solid rgba(255, 77, 77, 0.2);
 }
 
 .image-upload {
@@ -73,21 +104,28 @@
 }
 
 .upload-placeholder {
-  border: 2px dashed #ddd;
-  border-radius: 4px;
+  border: 2px dashed rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
   padding: 2rem;
   text-align: center;
-  color: #666;
+  color: rgba(255, 255, 255, 0.7);
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.upload-placeholder:hover {
+  border-color: #0A647A;
+  background: rgba(10, 100, 122, 0.1);
 }
 
 .image-preview {
   max-width: 100%;
   max-height: 200px;
   object-fit: contain;
+  border-radius: 8px;
 }
 
 .button-group {
@@ -99,60 +137,68 @@
 
 .cancel-button,
 .save-button {
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
   font-weight: 500;
   cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 .cancel-button {
-  background-color: #f3f4f6;
-  border: 1px solid #d1d5db;
-  color: #374151;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+
+.cancel-button:hover {
+  background: rgba(255, 255, 255, 0.15);
 }
 
 .save-button {
-  background-color: #0A647A;
+  background: linear-gradient(135deg, #0A647A, #0c8aa8);
   border: none;
   color: white;
 }
 
 .save-button:hover {
-  background-color: #085466;
+  background: linear-gradient(135deg, #085466, #0a7a94);
+  transform: translateY(-1px);
 }
 
 .save-button:disabled {
-  background-color: #9ca3af;
+  background: rgba(255, 255, 255, 0.1);
   cursor: not-allowed;
+  transform: none;
 }
 
-/* New styles for rich text editor */
+/* Rich text editor styles */
 .editor-toolbar {
   display: flex;
   gap: 0.5rem;
-  padding: 0.5rem;
-  background-color: #f3f4f6;
-  border: 1px solid #ddd;
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-bottom: none;
-  border-radius: 4px 4px 0 0;
+  border-radius: 8px 8px 0 0;
   margin-bottom: -1px;
 }
 
 .editor-toolbar button {
   padding: 0.5rem;
-  background: none;
-  border: 1px solid transparent;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 4px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #4b5563;
+  color: rgba(255, 255, 255, 0.9);
+  transition: all 0.3s ease;
 }
 
 .editor-toolbar button:hover {
-  background-color: #e5e7eb;
-  border-color: #d1d5db;
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
 .heading-dropdown {
@@ -163,15 +209,17 @@
   position: absolute;
   top: 100%;
   left: 0;
-  background-color: white;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  padding: 0.25rem;
+  background: linear-gradient(135deg, rgba(26, 28, 44, 0.95), rgba(67, 137, 162, 0.95));
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 0.5rem;
   display: none;
   flex-direction: column;
   gap: 0.25rem;
   z-index: 10;
-  min-width: 100px;
+  min-width: 120px;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
 }
 
 .heading-dropdown:hover .heading-options {
@@ -179,9 +227,10 @@
 }
 
 .heading-options button {
-  padding: 0.25rem 0.5rem;
+  padding: 0.5rem 0.75rem;
   text-align: left;
   width: 100%;
+  border-radius: 4px;
 }
 
 .color-picker {
@@ -201,9 +250,13 @@
 
 .color-picker button:hover + input[type="color"] {
   visibility: visible;
-  width: 30px;
-  height: 30px;
+  width: 32px;
+  height: 32px;
   position: absolute;
   top: 100%;
   left: 0;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  padding: 2px;
 }

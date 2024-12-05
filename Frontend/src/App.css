@@ -4,11 +4,180 @@ body {
     color: #fff;
     min-height: 100vh;
     transition: background 0.3s ease;
+    overflow-x: hidden;
 }
 
-#about, #blog, #contact, #portfolio, #login, #service {
-    background: linear-gradient(135deg, #1a1c2c, #4389A2);
-    transition: all 0.3s ease;
-    min-height: 100vh;
-    padding: 2rem 0;
+/* Enhanced star twinkling animation */
+@keyframes twinkle {
+    0%, 100% { 
+        opacity: 0.2;
+        transform: scale(0.8) rotate(0deg);
+        filter: blur(1px);
+    }
+    50% { 
+        opacity: 1;
+        transform: scale(1.2) rotate(180deg);
+        filter: blur(0);
+    }
+}
+
+/* Smooth floating animation */
+@keyframes float {
+    0% {
+        transform: translateY(0px) translateX(0px);
+    }
+    25% {
+        transform: translateY(-15px) translateX(5px);
+    }
+    50% {
+        transform: translateY(-20px) translateX(0px);
+    }
+    75% {
+        transform: translateY(-15px) translateX(-5px);
+    }
+    100% {
+        transform: translateY(0px) translateX(0px);
+    }
+}
+
+/* Enhanced gradient animation */
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+        background-size: 200% 200%;
+    }
+    50% {
+        background-position: 100% 50%;
+        background-size: 150% 150%;
+    }
+    100% {
+        background-position: 0% 50%;
+        background-size: 200% 200%;
+    }
+}
+
+/* Rocket flame animation */
+@keyframes flicker {
+    0% {
+        transform: scaleX(1) scaleY(1);
+        opacity: 0.7;
+        filter: blur(3px);
+    }
+    50% {
+        transform: scaleX(1.1) scaleY(1.05);
+        opacity: 0.85;
+        filter: blur(2px);
+    }
+    100% {
+        transform: scaleX(0.95) scaleY(1.1);
+        opacity: 0.9;
+        filter: blur(4px);
+    }
+}
+
+/* Planet glow pulse */
+@keyframes planetPulse {
+    0%, 100% {
+        box-shadow: inset -10px -10px 20px rgba(0, 0, 0, 0.3),
+                    0 0 30px rgba(67, 137, 162, 0.3);
+    }
+    50% {
+        box-shadow: inset -10px -10px 20px rgba(0, 0, 0, 0.3),
+                    0 0 50px rgba(67, 137, 162, 0.6);
+    }
+}
+
+.stars {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+    perspective: 1000px;
+}
+
+.star {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #fff,
+                0 0 20px #fff,
+                0 0 30px rgba(255, 255, 255, 0.5);
+    animation: twinkle var(--twinkle-duration) ease-in-out infinite,
+               float var(--float-duration) ease-in-out infinite;
+    opacity: var(--initial-opacity);
+    transform-style: preserve-3d;
+}
+
+.animate-gradient {
+    background-size: 200% 200%;
+    animation: gradient 8s ease infinite;
+}
+
+.preloader {
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.rocket {
+    filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.5));
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+}
+
+.rocket svg path {
+    fill: white;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.rocket-flame {
+    animation: flicker 0.2s infinite alternate;
+    transform-origin: center bottom;
+    mix-blend-mode: screen;
+}
+
+.planet {
+    animation: planetPulse 3s ease-in-out infinite;
+    background: linear-gradient(135deg, #2a3a5c 0%, #4389A2 100%);
+    transform-style: preserve-3d;
+}
+
+/* Generate enhanced stars with 3D effect */
+@for $i from 1 through 50 {
+    .star:nth-child($i) {
+        left: random(100) * 1%;
+        top: random(100) * 1%;
+        --twinkle-duration: #{random(4) + 1}s;
+        --float-duration: #{random(6) + 2}s;
+        --initial-opacity: #{random(10) / 10};
+        transform: translateZ(random(100) * -1px);
+    }
+}
+
+/* Enhanced star glow effect */
+.star::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 8px;
+    height: 8px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0) 70%);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    filter: blur(2px);
+    pointer-events: none;
+}
+
+/* Ensure content is above stars with proper stacking */
+#root > * {
+    position: relative;
+    z-index: 1;
+    transform-style: preserve-3d;
 }
