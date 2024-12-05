@@ -4,7 +4,7 @@ import { FaXTwitter } from "react-icons/fa6";
 
 const Team = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 py-20">
+    <div className="min-h-screen bg-[linear-gradient(135deg,#1a1c2c,#4389A2)] py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h1 className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#0A647A] to-[#0c8aa8] text-center mb-6">
           Our Team

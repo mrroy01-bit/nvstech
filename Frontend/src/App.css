@@ -1,9 +1,14 @@
 body {
-    background: linear-gradient(135deg, #000428, #004e92);
+    background: linear-gradient(135deg, #1a1c2c, #4389A2);
     font-family: "Space Grotesk", sans-serif;
     color: #fff;
+    min-height: 100vh;
+    transition: background 0.3s ease;
 }
 
-#about,#blog,#contact,#portfolio,#login,#service{
-    background: linear-gradient(135deg, #000428, #004e92);
+#about, #blog, #contact, #portfolio, #login, #service {
+    background: linear-gradient(135deg, #1a1c2c, #4389A2);
+    transition: all 0.3s ease;
+    min-height: 100vh;
+    padding: 2rem 0;
 }

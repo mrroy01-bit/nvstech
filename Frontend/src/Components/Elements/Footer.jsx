@@ -1,6 +1,8 @@
 import React from 'react'
-import {gsap} from 'gsap'
+import { gsap } from 'gsap'
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { FaGithub, FaLinkedin } from "react-icons/fa";
+import { FaTwitter } from "react-icons/fa"; // corrected import statement
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -26,26 +28,42 @@ const Footer = () => {
   }, [footerRef])
 
   return (
-    <footer ref={footerRef} className="bg-gray-900 text-white p-4 flex flex-row items-center justify-center">
-      <div className="copy  flex items-center justify-center">
-        <p className=" text-center text-sm">
-          &copy; {new Date().getFullYear()} NVS Tech. All rights reserved.
-        </p>
-      </div>
-      <div className="flex items-center">
-        <a href="https://github.com/nvs-tech" target="_blank" rel="noopener noreferrer" className="mr-4">
-          <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" alt="GitHub" className="h-8 w-8" />
-        </a>
-        <a href="https://twitter.com/nvstech" target="_blank" rel="noopener noreferrer" className="mr-4">
-          <img src="https://cdn-icons-png.flaticon.com/512/124/124021.png" alt="Twitter" className="h-8 w-8" />
-        </a>
-        <a href="https://www.linkedin.com/company/nvs-tech" target="_blank" rel="noopener noreferrer" className="mr-4">
-          <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="LinkedIn" className="h-8 w-8" />
-        </a>
+    <footer ref={footerRef} className="bg-[linear-gradient(135deg,#1a1c2c,#4389A2)] text-white py-6 px-4">
+      <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
+        <div className="text-center md:text-left">
+          <p className="text-sm text-gray-300">
+            &copy; {new Date().getFullYear()} NVS Tech. All rights reserved.
+          </p>
+        </div>
+        <div className="flex items-center space-x-6">
+          <a 
+            href="https://github.com/nvs-tech" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-gray-300 hover:text-white transition-colors duration-300"
+          >
+            <FaGithub size={24} />
+          </a>
+          <a 
+            href="https://twitter.com/nvstech" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-gray-300 hover:text-white transition-colors duration-300"
+          >
+            <FaTwitter size={24} /> 
+          </a>
+          <a 
+            href="https://www.linkedin.com/company/nvs-tech" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-gray-300 hover:text-white transition-colors duration-300"
+          >
+            <FaLinkedin size={24} />
+          </a>
+        </div>
       </div>
     </footer>
   )
 }
 
 export default Footer
-
