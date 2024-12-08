@@ -56,7 +56,7 @@ function Login() {
       if (response.data.success) {
         localStorage.setItem('token', response.data.token);
         localStorage.setItem('user', JSON.stringify(response.data.user));
-        navigate('/dashboard');
+        navigate('/admin/dashboard');
       }
     } catch (error) {
       console.error('Login error:', error);

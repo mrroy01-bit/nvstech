@@ -36,12 +36,12 @@ function Nav() {
           </nav>
 
           {/* Login Button */}
-          <div className="hidden md:flex w-1/4 justify-end">
+          <div className="hidden md:flex w-1/4 justify-end items-center">
             <Link 
               to='/login'
-              className="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-r from-[#1a1c2c] to-[#4389A2] hover:from-[#4389A2] hover:to-[#1a1c2c] transition-all duration-300 group"
+              className="flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br from-[#54587a] via-[#2d5569] to-[#4389A2] hover:from-[#4389A2] hover:via-[#2d5569] hover:to-[#9ca4e2] shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 group"
             >
-              <FaLock className="text-white group-hover:scale-110 transition-transform duration-300" />
+              <FaLock className="text-white text-lg group-hover:scale-110 transition-transform duration-300" />
             </Link>
           </div>
 

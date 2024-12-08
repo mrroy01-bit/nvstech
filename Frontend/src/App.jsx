@@ -25,8 +25,8 @@ function App() {
       <Route path="/contact" element={<Contact />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
-      <Route path="/dashboard" element={<Dashboard />} />
-<      Route path="/admin/profile" element={<Profile />} />
+      <Route path="/admin/dashboard" element={<Dashboard />} />
+      <Route path="/admin/profile" element={<Profile />} />
     </Routes>
   );
 }

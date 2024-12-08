@@ -92,15 +92,14 @@ const Dashboard = () => {
 
   const menuItems = [
     { id: 'posts', icon: <FaRegNewspaper />, label: 'Posts', link: '/admin/dashboard' },
-    { id: 'profile', icon: <FaUser />, label: 'Profile', link: '/admin/profile' }
+    { id: 'profile', icon: <FaUser />, label: 'Profile',  }
   ];
 
   const handleNavigation = (item) => {
     if (item.link) {
       navigate(item.link);
-    } else {
-      setActivePage(item.id);
     }
+    setActivePage(item.id);
   };
 
   return (
@@ -126,76 +125,114 @@ const Dashboard = () => {
 
       <div className="main-content">
         <div className="header">
-          <div className="search-bar">
-            <FaSearch style={{ 
-              position: 'absolute', 
-              left: '12px', 
-              top: '50%', 
-              transform: 'translateY(-50%)',
-              color: '#5f6368'
-            }} />
-            <input
-              type="text"
-              className="search-input"
-              placeholder="Search posts"
-            />
-          </div>
+          {activePage === 'posts' && (
+            <div className="search-bar">
+              <FaSearch style={{ 
+                position: 'absolute', 
+                left: '12px', 
+                top: '50%', 
+                transform: 'translateY(-50%)',
+                color: '#5f6368'
+              }} />
+              <input
+                type="text"
+                className="search-input"
+                placeholder="Search posts"
+              />
+            </div>
+          )}
         </div>
 
-        {loading ? (
-          <div className="loading-state">Loading...</div>
-        ) : error ? (
-          <div className="error-state">
-            <p>{error}</p>
-            <button onClick={fetchPosts}>
-              Retry
-            </button>
-          </div>
-        ) : posts.length === 0 ? (
-          <div className="empty-state">
-            <img src="/pencil-icon.png" alt="No posts" />
-            <h3>No posts</h3>
-            <p>Posts you create will show up here</p>
-          </div>
-        ) : (
-          <div className="posts-list">
-            {posts.map(post => (
-              <div key={post._id} className="post-card">
-                {post.imageUrl && (
-                  <img 
-                    src={`http://localhost:8080${post.imageUrl}`} 
-                    alt={post.title} 
-                    className="post-image" 
-                  />
-                )}
-                <div className="post-content">
-                  <h3>{post.title}</h3>
-                  <p className="post-category">{post.category}</p>
-                  <p className="post-excerpt">{post.content.substring(0, 150)}...</p>
-                  <div className="post-meta">
-                    <span>{new Date(post.date).toLocaleDateString()}</span>
-                    <span className="separator">•</span>
-                    <span>{post.author}</span>
-                    <div className="post-actions">
-                      <button 
-                        className="edit-button"
-                        onClick={() => setEditingPost(post)}
-                        title="Edit post"
-                      >
-                        <FaEdit />
-                      </button>
-                      <button 
-                        className="delete-button"
-                        onClick={() => handleDeletePost(post._id)}
-                        title="Delete post"
-                      >
-                        <FaTrash />
-                      </button>
+        {activePage === 'posts' ? (
+          <>
+            {loading ? (
+              <div className="loading-state">Loading...</div>
+            ) : error ? (
+              <div className="error-state">
+                <p>{error}</p>
+                <button onClick={fetchPosts}>
+                  Retry
+                </button>
+              </div>
+            ) : posts.length === 0 ? (
+              <div className="empty-state">
+                <img src="/pencil-icon.png" alt="No posts" />
+                <h3>No posts</h3>
+                <p>Posts you create will show up here</p>
+              </div>
+            ) : (
+              <div className="posts-list">
+                {posts.map(post => (
+                  <div key={post._id} className="post-card">
+                    {post.imageUrl && (
+                      <img 
+                        src={`http://localhost:8080${post.imageUrl}`} 
+                        alt={post.title} 
+                        className="post-image" 
+                      />
+                    )}
+                    <div className="post-content">
+                      <h3>{post.title}</h3>
+                      <p className="post-category">{post.category}</p>
+                      <p className="post-excerpt">{post.content.substring(0, 150)}...</p>
+                      <div className="post-meta">
+                        <span>{new Date(post.date).toLocaleDateString()}</span>
+                        <span className="separator">•</span>
+                        <span>{post.author}</span>
+                        <div className="post-actions">
+                          <button 
+                            className="edit-button"
+                            onClick={() => setEditingPost(post)}
+                            title="Edit post"
+                          >
+                            <FaEdit />
+                          </button>
+                          <button 
+                            className="delete-button"
+                            onClick={() => handleDeletePost(post._id)}
+                            title="Delete post"
+                          >
+                            <FaTrash />
+                          </button>
+                        </div>
+                      </div>
                     </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </>
+        ) : activePage === 'profile' && (
+          <div className="profile-content">
+            <h2 className="text-2xl font-bold mb-6">Profile</h2>
+            <div className="bg-white rounded-lg shadow p-6">
+              <div className="flex items-center mb-6">
+                <div className="w-20 h-20 bg-gray-200 rounded-full flex items-center justify-center">
+                  <FaUser className="text-3xl text-gray-400" />
+                </div>
+                <div className="ml-4">
+                  <h3 className="text-xl font-semibold">Admin User</h3>
+                  <p className="text-gray-600">admin@example.com</p>
+                </div>
+              </div>
+              <div className="border-t pt-6">
+                <h4 className="text-lg font-semibold mb-4">Account Details</h4>
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">Role</label>
+                    <p className="mt-1">Administrator</p>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">Member Since</label>
+                    <p className="mt-1">January 1, 2024</p>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">Last Login</label>
+                    <p className="mt-1">Today</p>
                   </div>
                 </div>
               </div>
-            ))}
+            </div>
           </div>
         )}
       </div>

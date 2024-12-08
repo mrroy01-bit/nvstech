@@ -2,6 +2,7 @@ import Nav from '../Components/Elements/Nav'
 import Hero from '../Components/Elements/Hero'
 import Team from '../Components/Elements/Team'
 import PreLoader from '../Components/Elements/PreLoader'
+import Footer from '../Components/Elements/Footer'
 import { useState, useEffect } from 'react'
 
 function Home() {
@@ -31,6 +32,7 @@ function Home() {
         <Nav />
         <Hero />
         <Team />
+        <Footer/>
       </div>
     </>
   )

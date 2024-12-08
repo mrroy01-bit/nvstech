@@ -41,7 +41,7 @@ const postSchema = new mongoose.Schema({
     author: {
         type: String,
         required: true,
-        default: 'Admin'
+        default: 'nvs-team'
     },
     date: {
         type: Date,
