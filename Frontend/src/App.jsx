@@ -4,7 +4,6 @@ import './index.css';
 import Home from './Pages/Home';
 import About from './Pages/About';
 import Portfolio from './Pages/Portfolio';
-import Service from './Pages/Service';
 import Contact from './Pages/Contact';
 import Blog from './Pages/Blog';
 import Login from './Pages/Login';
@@ -19,7 +18,6 @@ function App() {
       <Route path="/" element={<Home />} />
       <Route path="/about" element={<About />} />
       <Route path="/project" element={<Portfolio />} />
-      <Route path="/service" element={<Service />} />
       <Route path="/blog" element={<Blog />} />
       <Route path="/blog/:id" element={<PostDetail />} />
       <Route path="/contact" element={<Contact />} />

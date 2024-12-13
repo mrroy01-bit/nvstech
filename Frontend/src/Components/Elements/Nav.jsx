@@ -28,7 +28,6 @@ function Nav() {
             <div className="flex space-x-1 bg-gray-800/50 rounded-full px-6 py-2 backdrop-blur-sm">
               <NavLink to="/" label="Home" />
               <NavLink to="/about" label="About" />
-              <NavLink to="/service" label="Service" />
               <NavLink to="/project" label="Portfolio" />
               <NavLink to="/blog" label="Blog" />
               <NavLink to="/contact" label="Contact" />
