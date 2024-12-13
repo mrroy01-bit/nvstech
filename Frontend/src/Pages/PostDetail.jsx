@@ -18,7 +18,7 @@ const PostDetail = () => {
   const fetchPost = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`http://localhost:8080/api/posts/${id}`);
+      const response = await axios.get(`https://nvstech-backend.onrender.com/api/posts/${id}`);
       if (response.data.success) {
         setPost(response.data.data);
       } else {
@@ -104,7 +104,7 @@ const PostDetail = () => {
             {post.imageUrl && (
               <div className="relative">
                 <img 
-                  src={`http://localhost:8080${post.imageUrl}`}
+                  src={`https://nvstech-backend.onrender.com${post.imageUrl}`}
                   alt={post.title}
                   className="w-full h-[400px] object-cover"
                 />
