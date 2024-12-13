@@ -79,11 +79,11 @@ const Dashboard = () => {
   const handleDeletePost = async (postId) => {
     if (window.confirm('Are you sure you want to delete this post?')) {
       try {
-        const response = await axios.delete(https://nvstech-backend.onrender.com/api/posts/${postId}`);
+        const response = await axios.delete(`https://nvstech-backend.onrender.com/api/posts/${postId}`);
         if (response.data.success) {
           await fetchPosts();
         }
-      } catch (error) {
+      } catch (error) 
         console.error('Error deleting post:', error);
         setError('Failed to delete post');
       }
