@@ -6,7 +6,7 @@ const cors = require('cors');
 const contactRoutes = require('./Routes/contactRoutes');
 const authRoutes = require('./Routes/authRoutes.js'); // Explicitly specify .js extension
 const postRoutes = require('./Routes/postRoutes');
-const cors = require('cors');
+// const cors = require('cors');
 
 const PORT = process.env.PORT || 8080;
 
