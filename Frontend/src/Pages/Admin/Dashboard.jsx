@@ -29,7 +29,7 @@ const Dashboard = () => {
 
   const fetchPosts = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/api/posts');
+      const response = await axios.get('https://nvstech-backend.onrender.com/api/posts');
       console.log('Full API Response:', response);
       
       if (response.data && response.data.success) {
@@ -65,7 +65,7 @@ const Dashboard = () => {
 
   const handleEditPost = async (postData) => {
     try {
-      const response = await axios.put(`http://localhost:8080/api/posts/${postData._id}`, postData);
+      const response = await axios.put(`https://nvstech-backend.onrender.com/api/posts/${postData._id}`, postData);
       if (response.data.success) {
         setEditingPost(null);
         await fetchPosts();
@@ -79,7 +79,7 @@ const Dashboard = () => {
   const handleDeletePost = async (postId) => {
     if (window.confirm('Are you sure you want to delete this post?')) {
       try {
-        const response = await axios.delete(`http://localhost:8080/api/posts/${postId}`);
+        const response = await axios.delete(https://nvstech-backend.onrender.com/api/posts/${postId}`);
         if (response.data.success) {
           await fetchPosts();
         }
@@ -166,7 +166,7 @@ const Dashboard = () => {
                   <div key={post._id} className="post-card">
                     {post.imageUrl && (
                       <img 
-                        src={`http://localhost:8080${post.imageUrl}`} 
+                        src={`https://nvstech-backend.onrender.com${post.imageUrl}`} 
                         alt={post.title} 
                         className="post-image" 
                       />
