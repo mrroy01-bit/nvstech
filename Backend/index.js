@@ -10,7 +10,7 @@ const postRoutes = require('./Routes/postRoutes');
 
 const PORT = process.env.PORT || 8080;
 
-app.use(cors());
+// app.use(cors());
 
 // Debug logging middleware
 app.use((req, res, next) => {
@@ -18,13 +18,13 @@ app.use((req, res, next) => {
     next();
 });
 
-// // CORS configuration
-// app.use(cors({
-//     origin: 'https://nvstech-backend.onrender.com', // Your React frontend URL
-//     credentials: true,
-//     methods: ['GET', 'POST', 'PUT', 'DELETE'],
-//     allowedHeaders: ['Content-Type', 'Authorization']
-// }));
+// CORS configuration
+app.use(cors({
+    origin: 'https://nvstech-frontend.onrender.com', // Your React frontend URL
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
 // Middleware
 app.use(express.json());

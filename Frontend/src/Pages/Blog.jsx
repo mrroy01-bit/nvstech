@@ -178,7 +178,7 @@ const Blog = () => {
                 <div key={post._id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
                   {post.imageUrl && (
                     <img 
-                      src={`http://localhost:8080${post.imageUrl}`}
+                      src={`process.env.VITE_BASE_URL${post.imageUrl}`}
                       alt={post.title}
                       className="w-full h-48 object-cover"
                     />
