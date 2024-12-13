@@ -1,4 +1,3 @@
-import about from '../Assets/Img/about.jpg'
 import Nav from '../Components/Elements/Nav'
 import StarBackground from '../Components/Elements/StarBackground'
 
@@ -39,11 +38,7 @@ function About() {
             </div>
 
             <div className="rounded-lg shadow-xl overflow-hidden">
-              <img 
-                src={about} 
-                alt="About NVS" 
-                className="w-full h-full object-cover"
-              />
+             
             </div>
           </div>
         </div>
