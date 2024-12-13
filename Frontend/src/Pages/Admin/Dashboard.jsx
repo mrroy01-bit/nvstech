@@ -83,7 +83,7 @@ const Dashboard = () => {
         if (response.data.success) {
           await fetchPosts();
         }
-      } catch (error) 
+      } catch (error) {
         console.error('Error deleting post:', error);
         setError('Failed to delete post');
       }
