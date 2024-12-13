@@ -17,7 +17,7 @@ app.use((req, res, next) => {
 
 // CORS configuration
 app.use(cors({
-    origin: 'http://localhost:5173', // Your React frontend URL
+    origin: 'https://nvstech-backend.onrender.com', // Your React frontend URL
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization']
