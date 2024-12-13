@@ -24,7 +24,7 @@ const Blog = () => {
   const fetchPosts = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('http://localhost:8080/api/posts');
+      const response = await axios.get('https://nvstech-backend.onrender.com/api/posts');
       if (response.data.success) {
         setPosts(response.data.data);
       }
@@ -39,7 +39,7 @@ const Blog = () => {
   const handleReadMore = async (postId) => {
     try {
       // Increment view count
-      await axios.post(`http://localhost:8080/api/posts/${postId}/view`);
+      await axios.post(`https://nvstech-backend.onrender.com/api/posts/${postId}/view`);
       navigate(`/blog/${postId}`);
     } catch (error) {
       console.error('Error incrementing view count:', error);
@@ -48,7 +48,7 @@ const Blog = () => {
 
   const handleLike = async (postId) => {
     try {
-      const response = await axios.post(`http://localhost:8080/api/posts/${postId}/like`, {
+      const response = await axios.post(`https://nvstech-backend.onrender.com/api/posts/${postId}/like`, {
         userId: currentUserId
       });
       if (response.data.success) {
@@ -79,7 +79,7 @@ const Blog = () => {
     if (!newComment.trim()) return;
 
     try {
-      const response = await axios.post(`http://localhost:8080/api/posts/${selectedPost._id}/comment`, {
+      const response = await axios.post(`https://nvstech-backend.onrender.com/api/posts/${selectedPost._id}/comment`, {
         userId: currentUserId,
         content: newComment
       });
