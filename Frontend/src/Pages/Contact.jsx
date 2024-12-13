@@ -32,7 +32,7 @@ const Contact = () => {
     setStatus({ type: '', message: '' })
 
     try {
-      const response = await axios.post('http://localhost:8080/api/contact/submit', formData)
+      const response = await axios.post('https://nvstech-backend.onrender.com/api/contact/submit', formData)
       
       if (response.data.success) {
         setStatus({
