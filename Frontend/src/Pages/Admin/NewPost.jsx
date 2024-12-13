@@ -21,7 +21,7 @@ const NewPost = ({ post, onClose, onSave }) => {
       setPostData({
         ...post,
         image: null, // Reset image since we can't populate File object
-        imagePreview: post.imageUrl ? `http://localhost:8080${post.imageUrl}` : null
+        imagePreview: post.imageUrl ? `https://nvstech-backend.onrender.com${post.imageUrl}` : null
       });
     }
   }, [post]);
@@ -97,12 +97,12 @@ const NewPost = ({ post, onClose, onSave }) => {
       let response;
       if (post) {
         // If editing, send PUT request
-        response = await axios.put(`http://localhost:8080/api/posts/${post._id}`, formData, {
+        response = await axios.put(`https://nvstech-backend.onrender.com/api/posts/${post._id}`, formData, {
           headers: { 'Content-Type': 'multipart/form-data' }
         });
       } else {
         // If creating new post, send POST request
-        response = await axios.post('http://localhost:8080/api/posts/create', formData, {
+        response = await axios.post('https://nvstech-backend.onrender.com/api/posts/create', formData, {
           headers: { 'Content-Type': 'multipart/form-data' }
         });
       }
